@@ -2,3 +2,6 @@
 *~
 #ignore personal notes
 *.notes
+#ignore matlab executions files and other matlab files
+*.mexa64
+*.txt#
