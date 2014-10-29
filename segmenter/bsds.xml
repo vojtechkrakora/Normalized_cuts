@@ -1,0 +1,42 @@
+<!--  segmenter parameters -->
+<main>
+  <var name="nrun"        rem="number of runs"> 16 </var>
+  <var name="from"        rem="run from"> 1 </var>
+  <var name="prefix"      rem="section prefix"> run </var>
+  <section name="run_!0">
+    <var name="nr"          rem="size of the input image (rows)"> 321 </var>
+    <var name="nc"          rem="size of the input image (columns)"> 481 </var>
+    <var name="ImgFile"     rem="input image filename"> "bsds/0" </var>
+    <var name="ImgType"     rem="input image type"> 257 </var>
+    <var name="planes"      rem="number of input image planes"> 3 </var>
+    <var name="clusters"    rem="number of clusters"> 5 </var>
+    <var name="iterations"  rem="maximum number of iterations"> 500 </var>
+    <var name="neigh"       rem="neighbourhood weight (0 .. w/o neighbourhood)"> 25 </var>
+    <var name="norm"        rem="normalize values? (0/1)"> 0 </var>
+    <var name="OutFile"     rem="output image filename"> "bsds/0" </var>
+    <var name="OutType"     rem="output image type"> 302 </var>
+    <section name="features">
+      <var name="sigma"       rem="sigma"> 5 </var>
+      <var name="win"         rem="window size"> 9 </var>
+      <var name="rgb2lab"     rem="convert from RGB into Lab? (0/1)"> 1 </var>
+    </section>
+    <section name="postprocessing">
+    </section>
+  </section>
+  <section name="run_!1"><include>"run_!0"</include><var name="ImgFile"> "bsds/12074" </var><var name="OutFile"> "bsds/_12074" </var></section>
+  <section name="run_!2"><include>"run_!0"</include><var name="ImgFile"> "bsds/100075" </var><var name="OutFile"> "bsds/_100075" </var></section>
+  <section name="run_!3"><include>"run_!0"</include><var name="ImgFile"> "bsds/103070" </var><var name="OutFile"> "bsds/_103070" </var></section>
+  <section name="run_!4"><include>"run_!0"</include><var name="ImgFile"> "bsds/105019" </var><var name="OutFile"> "bsds/_105019" </var></section>
+  <section name="run_!5"><include>"run_!0"</include><var name="ImgFile"> "bsds/105025" </var><var name="OutFile"> "bsds/_105025" </var></section>
+  <section name="run_!6"><include>"run_!0"</include><var name="ImgFile"> "bsds/106024" </var><var name="OutFile"> "bsds/_106024" </var></section>
+  <section name="run_!7"><include>"run_!0"</include><var name="ImgFile"> "bsds/108005" </var><var name="OutFile"> "bsds/_108005" </var></section>
+  <section name="run_!8"><include>"run_!0"</include><var name="ImgFile"> "bsds/108073" </var><var name="OutFile"> "bsds/_108073" </var></section>
+  <section name="run_!9"><include>"run_!0"</include><var name="ImgFile"> "bsds/113044" </var><var name="OutFile"> "bsds/_113044" </var></section>
+  <section name="run_!10"><include>"run_!0"</include><var name="ImgFile"> "bsds/134008" </var><var name="OutFile"> "bsds/_134008" </var></section>
+  <section name="run_!11"><include>"run_!0"</include><var name="ImgFile"> "bsds/138078" </var><var name="OutFile"> "bsds/_138078" </var></section>
+  <section name="run_!12"><include>"run_!0"</include><var name="ImgFile"> "bsds/145053" </var><var name="OutFile"> "bsds/_145053" </var></section>
+  <section name="run_!13"><include>"run_!0"</include><var name="ImgFile"> "bsds/151087" </var><var name="OutFile"> "bsds/_151087" </var></section>
+  <section name="run_!14"><include>"run_!0"</include><var name="ImgFile"> "bsds/157036" </var><var name="OutFile"> "bsds/_157036" </var></section>
+  <section name="run_!15"><include>"run_!0"</include><var name="ImgFile"> "bsds/161062" </var><var name="OutFile"> "bsds/_161062" </var></section>
+  <section name="run_!16"><include>"run_!0"</include><var name="ImgFile"> "bsds/169012" </var><var name="OutFile"> "bsds/_169012" </var></section>
+</main>

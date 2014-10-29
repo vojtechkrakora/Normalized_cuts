@@ -5,3 +5,5 @@
 #ignore matlab executions files and other matlab files
 *.mexa64
 *.txt#
+#ignore segmenter binary
+./segmenter/segmenter
