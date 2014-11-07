@@ -6,5 +6,5 @@
 *.mexa64
 *.txt#
 #ignore segmenter binary
-./segmenter/segmenter
+segmenter/segmenter
 ./segmenter/results/*
