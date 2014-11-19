@@ -92,7 +92,6 @@ int Segmenter::features(DyXML_wrapper &par) {
   par.get_str_opt(filename,"FeatFile",NULL,"Enter name of features:");
   par.get_val_opt(key,"FeatType",PRES_WRITE_KEY_PNG,"Enter features format code:");
   if (filename) { int ncolour=nfeat-1, nlev=255; pres2(key,feat,&nc,&nr,&ncolour,&nlev,filename); }
-
   return 0;
 }
 
@@ -107,7 +106,7 @@ int Segmenter::clustering(DyXML_wrapper &par) {
   par.get_val_opt(norm,"norm",0,"Normalize values? (0/1):");
 
   vr_alloc(probs,0,nclust-1,0,nr-1,0,nc-1);
-  for (r=0;r<nr;r++) for (c=0;c<nc;c++) for (i=0;i<nclust;i++) probs[i][r][c]=0;
+  for (r=0;r<nr;r++) for (c=0;c<nc;c++) for (i=0;i<nclust;i++) probs[i][r][c]=128;
 
   KMeans kmeans(nclust,nr,nc,nfeat+((neigh!=0)?2:0));
 
@@ -118,7 +117,12 @@ int Segmenter::clustering(DyXML_wrapper &par) {
   kmeans.compute(niter);
 
   for (r=0;r<nr;r++) for (c=0;c<nc;c++) probs[(kmeans.ind[r][c]<0)?0:kmeans.ind[r][c]][r][c]=1;
-    
+  int key;
+  const char * filename;
+  par.get_str_opt(filename,"FeatFile",NULL,"Enter name of features:");
+  par.get_val_opt(key,"FeatType",PRES_WRITE_KEY_PNG,"Enter features format code:");
+  pres2(key,kmeans.arr,&nc,&nr,new int(5),new int(6),filename);
+
   return 0;
 }
 
@@ -162,7 +166,7 @@ int Segmenter::save_final(DyXML_wrapper &par) {
 
   ncolour=0; nlev=nclust;
   pres2op(key,&final,&nc,&nr,&ncolour,&nlev,filename,0);
-
+	
   return 0;
 }
 
