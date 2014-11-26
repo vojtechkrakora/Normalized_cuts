@@ -1,13 +1,23 @@
 #include "NCut.h"
 #include <cmath>
 
-/*int countPosition(int x,int y,int sizeOfRow){
-	int position=x*sizeOfRow + y;
+//TODO Zkontrolovat
+//vypocet pozice na zaklade souradnic v realnem obrazku
+int countPosition(int x,int y){
+	int position=x*lenght1 + y;
 }
 
+//TODO Zkontrolovat
+//vypocet souradnic v realnem obrazku z pozice v poli
+void countCoords(int &x, int &y, int position){
+	x=position/lenght1;
+	y=position%lenght1;
+}
+
+/*
 void Node::createEdges(Node * nodes){
 	edges = new Edges[8];
-	int myPosition=countPosition(x,y,lenght1);
+	int myPosition=countPosition(x,y);
 	int destPosition;
 	double weight;
 
@@ -17,7 +27,7 @@ void Node::createEdges(Node * nodes){
 		for(int j=y-1;j<=y+1;j++){
 			if(j<0)j++;
 			if(j>lenght2)break;
-			destPosition = countPosition(x-1,y-1,lenght1);
+			destPosition = countPosition(x-1,y-1);
 			weight = fabs(nodes[myPosition].color - nodes[destPosition].color);
 			edges[edgesCnt++] = new Edge(myPosition, destPosition,weight);
 		}
@@ -26,7 +36,7 @@ void Node::createEdges(Node * nodes){
 
 
 //funkce vypoctu podobnosti 2 pixelu (rozdil barvy/vzdalenosti)
-double NCut::weightFunction(int x1, int x2, int x3, int x4){
+double NCut::weightFunction(int x1, int y1, int x2, int y2){
 	double distance = sqrt((x1-x2)*(x1-x2) + (y1-y2)(y1-y2));
 	double color1 = inputMatrix[x1,y1,0]+inputMatrix[x1,y1,1]+inputMatrix[x1,y1,2])/3.0;
 	double color2 = inputMatrix[x2,y2,0]+inputMatrix[x2,y2,1]+inputMatrix[x2,y2,2])/3.0;
@@ -39,7 +49,12 @@ void NCut::CreateAffinityMatrix(){
 	affinityMatrix = new double*[size];
 	for(int i=0;i<size;i++){
 		affinityMatrix = new double[size];
-		memset(affinityMatrix[i],0,size);
+		for(int j=0;j<size;j++){
+			int x1,y1,x2,y2;
+			countCoords(x1,y1,i);
+			countCoords(x2,y2,j);
+			affinityMatrix[i][j]=weightFunction(x1,y1,x2,y2);
+		}
 	}
 }
 	
@@ -49,12 +64,17 @@ void NCut::CreateDegreeMatrix(){
 	degreeMatrix = new double*[size];
 	for(int i=0;i<size;i++){
 		degreeMatrix = new double[size];
-		memset(affinityMatrix[i],0,size);
-		for(int j=0;j<lenght1;j++){
-			for(int k=0;k<lenght2;k++){
-				degreeMatrix[i][i]+=
-			}
-		}		
+		memset(affinityMatrix[i],0,size);	
+	}
+	for(int item=0;item<size;item++){
+		int x1,y1;
+		countCoords(x1,y1,item)
+		for(int i=0;i<size;i++){
+			if(i==item)continue; // hadam ze se nema zapocitavat on sam
+			int x2,y2;
+			countCoords(x2,y2,item);
+			degreeMatrix[item][item]+=weightFunction(x1,y1,x2,y2);
+		}
 	}
 }
 
