@@ -1,16 +1,76 @@
 #include "NCut.h"
+#include <cmath>
+
+/*int countPosition(int x,int y,int sizeOfRow){
+	int position=x*sizeOfRow + y;
+}
+
+void Node::createEdges(Node * nodes){
+	edges = new Edges[8];
+	int myPosition=countPosition(x,y,lenght1);
+	int destPosition;
+	double weight;
+
+	for(int i=x-1;i<=x+1;i++){
+		if(i<0)i++;
+		if(i>lenght1)break;
+		for(int j=y-1;j<=y+1;j++){
+			if(j<0)j++;
+			if(j>lenght2)break;
+			destPosition = countPosition(x-1,y-1,lenght1);
+			weight = fabs(nodes[myPosition].color - nodes[destPosition].color);
+			edges[edgesCnt++] = new Edge(myPosition, destPosition,weight);
+		}
+	}	
+}*/
+
+
+//funkce vypoctu podobnosti 2 pixelu (rozdil barvy/vzdalenosti)
+double NCut::weightFunction(int x1, int x2, int x3, int x4){
+	double distance = sqrt((x1-x2)*(x1-x2) + (y1-y2)(y1-y2));
+	double color1 = inputMatrix[x1,y1,0]+inputMatrix[x1,y1,1]+inputMatrix[x1,y1,2])/3.0;
+	double color2 = inputMatrix[x2,y2,0]+inputMatrix[x2,y2,1]+inputMatrix[x2,y2,2])/3.0;
+	return fabs(color1-color2)/distance;
+}
 
 // vytvori matici podobnosti
 void NCut::CreateAffinityMatrix(){
-
+	int size=lenght1*lenght2;
+	affinityMatrix = new double*[size];
+	for(int i=0;i<size;i++){
+		affinityMatrix = new double[size];
+		memset(affinityMatrix[i],0,size);
+	}
 }
 	
 // vytvori degree matici
 void NCut::CreateDegreeMatrix(){
+	int size=lenght1*lenght2;
+	degreeMatrix = new double*[size];
+	for(int i=0;i<size;i++){
+		degreeMatrix = new double[size];
+		memset(affinityMatrix[i],0,size);
+		for(int j=0;j<lenght1;j++){
+			for(int k=0;k<lenght2;k++){
+				degreeMatrix[i][i]+=
+			}
+		}		
+	}
 }
+
 // vypocita vlastni cislo (2nd)
 void NCut::ComputeEigenValue(){
-
+	int size=lenght1*lenght2;
+	double ** dSubAMatrix=new double*[size]; // (D-A)
+	for(int i=0;i<size;i++){
+		dSubAMatrix[i]=new double[size];
+	}
+	for(int i=0;i<size;i++){
+		for(int j=0;j<size;j++){
+			dSubAMatrix[i][j]=degreeMatrix[i][j] - affinityMatrix[i][j];
+		}
+	}
+	
 }
 // vypocita vlastni vektor
 void NCut::ComputeEigenVector(){
@@ -22,25 +82,27 @@ void NCut::NCut(){
 }
 
 NCut::NCut(double *** input,int lenght1, int lenght2, int lenght3){
-	int size=lenght1+lenght2;
+	this->inputMatrix=input;
+	this->lenght1=lenght1;
+	this->lenght2=lenght2;
+	
+	/*int size=lenght1*lenght2;	
+	nodes = new Nodes[size];
 	int index=0;
-	double * nodes=new double[size];
 	for(int i=0;i<lenght1;i++){
 		for(int j=0;j<lenght2;j++){
-			nodes[index]=(input[i,j,0]+input[i,j,1]+input[i,j,2])/3.0;
+			nodes[index++]=new Node(i,j,(input[i,j,0]+input[i,j,1]+input[i,j,2])/3.0);
 		}
-	}	
-	double ** adjacencyMatrix=new double[size];
-	for(int i =0;i<size;i++){
-		adjacencyMatrix[i]=new double[size];
-		memset(adjecencyMatrix[i],0,size);
 	}
-	
+	for(int i=0;i<size;i++){
+		nodes[i]=createEdges(nodes);
+	}*/
 }
 void NCut::Sementation(){
 
 }
+
 int** NCut::getResult(){
 
-return null;
+	return null;
 }
