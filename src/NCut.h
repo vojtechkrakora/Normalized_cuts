@@ -2,6 +2,7 @@
 #define NCUT_H
 class NCut{
 private:
+	double * nodes;					//uzly
 	double ** adjacencyMatrix;		//matice sousednosti
 	double ** affinityMatrix;		//matice podobnosti
 	double ** degreeMatrix;			//matice degree
