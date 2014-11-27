@@ -8,3 +8,4 @@
 #ignore segmenter binary
 segmenter/segmenter
 ./segmenter/results/*
+segmenter/nbproject/
