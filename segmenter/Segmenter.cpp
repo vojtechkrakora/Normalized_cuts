@@ -11,6 +11,7 @@
 #include "Pres2.h"
 #include "Maths.h"
 #include "KMeans.h"
+#include "NCut.h"
 
 
 Segmenter::Segmenter() {

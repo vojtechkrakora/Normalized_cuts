@@ -46,6 +46,7 @@ void Node::createEdges(Node * nodes){
 
 //funkce vypoctu podobnosti 2 pixelu (rozdil barvy/vzdalenosti)
 double NCut::weightFunction(int x1, int y1, int x2, int y2){
+    // predelat na w(i,j) = e^-(rozdil sedi) * e^-(vzdalenost)
     double distance = sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
     double color1 = inputMatrix[x1][y1];
     double color2 = inputMatrix[x2][y2];
@@ -54,6 +55,7 @@ double NCut::weightFunction(int x1, int y1, int x2, int y2){
 
 // vytvori matici podobnosti
 void NCut::CreateAffinityMatrix(){
+    // predelet aby to pocitalo z grafu a ne z obrazku
     int size=lenght1*lenght2;
     affinityMatrix = new double*[size];
     for(int i=0;i<size;i++){
@@ -69,6 +71,8 @@ void NCut::CreateAffinityMatrix(){
 	
 // vytvori degree matici
 void NCut::CreateDegreeMatrix(){
+    
+    // predelat aby to pocitalo z grafu a ne z obrazku
     int size=lenght1*lenght2;
     degreeMatrix = new double*[size];
     for(int i=0;i<size;i++){
@@ -120,18 +124,11 @@ NCut::NCut(double *** input,int lenght1, int lenght2, int lenght3,int clustersCn
     }
     this->lenght1=lenght1;
     this->lenght2=lenght2;
-    
-    /*int size=lenght1*lenght2;	
-    nodes = new Nodes[size];
-    int index=0;
-    for(int i=0;i<lenght1;i++){
-    	for(int j=0;j<lenght2;j++){
-    		nodes[index++]=new Node(i,j,(input[i][j][0]+input[i][j][1]+input[i][j][2])/3.0);
-    	}
-    }
-    for(int i=0;i<size;i++){
-    	nodes[i]=createEdges(nodes);
-    }*/
+    /*
+     *Chceme obrazek reprezentovat jako seznam uzlu o delce n*m
+     * kazdy uzel ma (x,y) pro vypocet d(x,y)
+     * kazdy uzel ma ulozenou barvu funkce RGBtoGrey
+     */
 }   
 void NCut::Segmentation(){
 
