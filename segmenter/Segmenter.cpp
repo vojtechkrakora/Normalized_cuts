@@ -96,7 +96,7 @@ int Segmenter::features(DyXML_wrapper &par) {
   return 0;
 }
 
-int Segmenter::clustering(DyXML_wrapper &par) {
+/*int Segmenter::clustering(DyXML_wrapper &par) {
   int niter;
   float neigh;
 
@@ -115,12 +115,12 @@ int Segmenter::clustering(DyXML_wrapper &par) {
   const char * filename;
   par.get_str_opt(filename,"FeatFile",NULL,"Enter name of features:");
   par.get_val_opt(key,"FeatType",PRES_WRITE_KEY_PNG,"Enter features format code:");
-  pres2(key,kmeans.arr,&nc,&nr,new int(5),new int(6),filename);*/
+  pres2(key,kmeans.arr,&nc,&nr,new int(5),new int(6),filename);
 
   return 0;
-}
+}*/
 
-/*int Segmenter::clustering(DyXML_wrapper &par) {
+int Segmenter::clustering(DyXML_wrapper &par) {
   int i,r,c, niter, norm;
   float neigh;
 
@@ -149,7 +149,7 @@ int Segmenter::clustering(DyXML_wrapper &par) {
 
   return 0;
 }
-*/
+
 
 int Segmenter::thematic_map(DyXML_wrapper &par) {
   int i,r,c,m;

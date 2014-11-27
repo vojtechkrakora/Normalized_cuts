@@ -19,7 +19,8 @@ private:
     int clusterCnt;
     int lenght1;
     int lenght2;
-    Node * nodes;					//uzly
+    Node ** nodes;//uzly
+    int nodesCnt;
     double ** inputMatrix;			//vstupni matice - splacla;
     double ** affinityMatrix;		//matice podobnosti
     double ** degreeMatrix;			//matice degree
@@ -31,7 +32,7 @@ private:
     void countCoords(int &x, int &y, int position);
 
 
-    double weightFunction(int x1,int y1, int x2,int y2);
+    double weightFunction(int node1, int node2);
     void CreateAffinityMatrix();	// vytvori matici podobnosti
     void CreateDegreeMatrix(); 		// vytvori degree matici
     void ComputeEigenValue();		// vypocita vlastni cislo (2nd)
@@ -39,7 +40,7 @@ private:
     void Cut();				// provede rez
 	
 public:
-    NCut(double *** input,int lenght1, int lenght2, int lenght3); // vyplni inputMatrix ("splacne")
+    NCut(float *** input,int lenght1, int lenght2, int lenght3, int clusterCnt); // vyplni inputMatrix ("splacne")
     void Segmentation();			// vlastni segmentace
     int ** getResult();				// vrati vysledek
 };
