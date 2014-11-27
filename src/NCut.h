@@ -35,7 +35,7 @@ private:
 	int lenght1;
 	int lenght2;
 	Node * nodes;					//uzly
-	double ***inputMatrix;			//vstupni matice;
+	double ** inputMatrix;			//vstupni matice - splacla;
 	double ** affinityMatrix;		//matice podobnosti
 	double ** degreeMatrix;			//matice degree
 	int *** resultMatrix;			//vysledna segmentace

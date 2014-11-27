@@ -1,6 +1,14 @@
 #include "NCut.h"
 #include <cmath>
 
+double RGBtoGreyLuminosity(double r, double g, double b){
+	return ((0.21*r)+(0.72*g)+(0.07*b));
+}
+
+double RGBtoGrey(double r, double g, double b){
+	return (r+g+b)/3.0;
+}
+
 //TODO Zkontrolovat
 //vypocet pozice na zaklade souradnic v realnem obrazku
 int countPosition(int x,int y){
@@ -38,8 +46,8 @@ void Node::createEdges(Node * nodes){
 //funkce vypoctu podobnosti 2 pixelu (rozdil barvy/vzdalenosti)
 double NCut::weightFunction(int x1, int y1, int x2, int y2){
 	double distance = sqrt((x1-x2)*(x1-x2) + (y1-y2)(y1-y2));
-	double color1 = inputMatrix[x1,y1,0]+inputMatrix[x1,y1,1]+inputMatrix[x1,y1,2])/3.0;
-	double color2 = inputMatrix[x2,y2,0]+inputMatrix[x2,y2,1]+inputMatrix[x2,y2,2])/3.0;
+	double color1 = inputMatrix[x1,y1]
+	double color2 = inputMatrix[x2,y2]
 	return fabs(color1-color2)/distance;
 }
 
@@ -102,7 +110,13 @@ void NCut::NCut(){
 }
 
 NCut::NCut(double *** input,int lenght1, int lenght2, int lenght3){
-	this->inputMatrix=input;
+	this->inputMatrix=new double*[lenght1];
+	for(int i=0;i<lenght1;i++){
+		inputMatrix[i]=new double[lenght2];
+		for(int j = 0;j<lenght2;j++){
+			inputMatrix=RGBtoGrey(input[i][j][0],input[i][j][1],input[i][j][2]);
+		}
+	}
 	this->lenght1=lenght1;
 	this->lenght2=lenght2;
 	
@@ -111,7 +125,7 @@ NCut::NCut(double *** input,int lenght1, int lenght2, int lenght3){
 	int index=0;
 	for(int i=0;i<lenght1;i++){
 		for(int j=0;j<lenght2;j++){
-			nodes[index++]=new Node(i,j,(input[i,j,0]+input[i,j,1]+input[i,j,2])/3.0);
+			nodes[index++]=new Node(i,j,(input[i][j][0]+input[i][j][1]+input[i][j][2])/3.0);
 		}
 	}
 	for(int i=0;i<size;i++){
