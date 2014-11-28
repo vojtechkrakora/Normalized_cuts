@@ -1,6 +1,7 @@
 #include "NCut.h"
 #include <cmath>
 #include <cstring>
+#include <cstdio>
 
 double RGBtoGreyLuminosity(double r, double g, double b){
     return ((0.21*r)+(0.72*g)+(0.07*b));
@@ -53,18 +54,39 @@ void NCut::CreateAffinityMatrix(){
 	
 // vytvori degree matici
 void NCut::CreateDegreeMatrix(){
-    int size=lenght1*lenght2;
-    degreeMatrix = new double*[size];
-    for(int i=0;i<size;i++){
-	degreeMatrix[i] = new double[size];
-	memset(affinityMatrix[i],0,size);	
+    degreeMatrix = new double*[nodesCnt];
+    for(int i=0;i<nodesCnt;i++){
+	degreeMatrix[i] = new double[nodesCnt];
+	memset(degreeMatrix[i],0,nodesCnt);	
     }
-    for(int item=0;item<size;item++){
-	for(int i=0;i<size;i++){
+    for(int item=0;item<nodesCnt;item++){
+	for(int i=0;i<nodesCnt;i++){
             if(i==item)continue; // hadam ze se nema zapocitavat on sam
             degreeMatrix[item][item]+=weightFunction(item,i);
 	}
     }
+}
+// TODO dodělat
+// B = D^(-1/2)*(D-A)*D^(-1/2) 
+// vrati B
+double** NCut::SimplifyEquation(double** D, double** A ){
+    //A=(D-A)
+    for(int i=0;i<nodesCnt;i++){
+        for(int j=0;j<nodesCnt;j++){
+            affinityMatrix[i][j]=degreeMatrix[i][j]-affinityMatrix[i][j];
+        }
+    }
+    //D=sqrt(D)
+    for(int i=0;i<nodesCnt;i++){
+        degreeMatrix[i][i]=sqrt(degreeMatrix[i][i]);
+    }
+    //inverzni matici z degree
+    //inverse(degreeMatrix);
+    //D = D^(-1/2)
+    
+    //maticove nasobeni
+    //B = multiply(multiply(D,A),D)
+    return 0;// return B
 }
 
 // vypocita vlastni cislo (2nd)
@@ -85,15 +107,19 @@ NCut::NCut(float *** input,int lenght1, int lenght2, int lenght3,int clustersCnt
     nodesCnt=0;
     for(int i=0;i<lenght1;i++){
     	for(int j = 0;j<lenght2;j++){
-        	double color=RGBtoGrey(input[i][j][0],input[i][j][1],input[i][j][2]);
+        	double color=RGBtoGrey(input[0][i][j],input[1][i][j],input[2][i][j]);
                 nodes[nodesCnt++]= new Node(i,j,color);
         }
     }
     this->lenght1=lenght1;
     this->lenght2=lenght2;
 }   
+NCut::~NCut(){
+    //TODO
+}
 void NCut::Segmentation(){
-
+    CreateAffinityMatrix();
+    CreateDegreeMatrix();
 }
 
 int** NCut::getResult(){
