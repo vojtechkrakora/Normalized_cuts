@@ -6,8 +6,8 @@ class Node{
 public:
 	int x;
 	int y;
-	double color;
-	Node(int x,int y,double color){
+	float color;
+	Node(int x,int y,float color){
 		this->x=x;
 		this->y=y;
 		this->color=color;
@@ -21,17 +21,17 @@ private:
     int lenght2;
     Node ** nodes;//uzly
     int nodesCnt;
-    double ** affinityMatrix;		//matice podobnosti
-    double ** degreeMatrix;			//matice degree
+    float ** affinityMatrix;		//matice podobnosti
+    float ** degreeMatrix;			//matice degree
     int *** resultMatrix;			//vysledna segmentace
-    double eigenvalue;				//vlastni cislo 2nd
-    double * eigenvector;			//vlastni vektor
+    float eigenvalue;				//vlastni cislo 2nd
+    float * eigenvector;			//vlastni vektor
 
     int countPosition(int x,int y);
     void countCoords(int &x, int &y, int position);
 
-    double** SimplifyEquation(double** D, double** A );
-    double weightFunction(int node1, int node2);
+    void SimplifyEquation();            // prevede do tvaru Ax=lambda x
+    float weightFunction(int node1, int node2);
     void CreateAffinityMatrix();	// vytvori matici podobnosti
     void CreateDegreeMatrix(); 		// vytvori degree matici
     void ComputeEigenValue();		// vypocita vlastni cislo (2nd)

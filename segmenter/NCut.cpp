@@ -1,13 +1,34 @@
 #include "NCut.h"
+#include "Maths.h"
 #include <cmath>
 #include <cstring>
 #include <cstdio>
 
-double RGBtoGreyLuminosity(double r, double g, double b){
+
+//nasobení matic... mozna optimalizace pro diagonalni matice
+float ** MatrixMultiply(float ** matA, float ** matB, float** matC, int rowCnt, bool matBisDiagonal=false){
+    if(matC==0){
+        matC=new float*[rowCnt];
+        for(int i=0;i<rowCnt;i++){
+            matC[i]=new float[rowCnt];
+        }
+    }
+    for(int i=0;i<rowCnt;i++){
+        for(int j=0;j<rowCnt;j++){
+            matC[i][j]=0;
+            for(int k=0;k<rowCnt;k++){
+                matC[i][j]+=matA[i][k]*matB[k][j];
+            }
+        }
+    }
+    return matC;
+}
+
+float RGBtoGreyLuminosity(float r, float g, float b){
     return ((0.21*r)+(0.72*g)+(0.07*b));
 }
 
-double RGBtoGrey(double r, double g, double b){
+float RGBtoGrey(float r, float g, float b){
     return (r+g+b)/3.0;
 }
 
@@ -26,15 +47,15 @@ void NCut::countCoords(int &x, int &y, int position){
 }
 
 //funkce vypoctu podobnosti 2 pixelu (rozdil barvy/vzdalenosti)
-double NCut::weightFunction(int node1, int node2){
-    double sigma=2.0;
+float NCut::weightFunction(int node1, int node2){
+    float sigma=2.0;
     Node* n1 = nodes[node1];
     Node* n2 = nodes[node2];
-    double distance = sqrt((n1->x-n2->x)*(n1->x-n2->x)
+    float distance = sqrt((n1->x-n2->x)*(n1->x-n2->x)
         + (n1->y-n2->y)*(n1->y-n2->y));
     distance/=sigma;
     distance = exp((-1)*fabs(distance));
-    double affinity=fabs(n1->color-n2->color);
+    float affinity=fabs(n1->color-n2->color);
     affinity/=sigma;
     affinity=exp((-1)*affinity);
     return affinity*distance;
@@ -43,9 +64,9 @@ double NCut::weightFunction(int node1, int node2){
 // vytvori matici podobnosti
 void NCut::CreateAffinityMatrix(){
     int size=lenght1*lenght2;
-    affinityMatrix = new double*[size];
+    affinityMatrix = new float*[size];
     for(int i=0;i<size;i++){
-    	affinityMatrix[i] = new double[size];
+    	affinityMatrix[i] = new float[size];
     	for(int j=0;j<size;j++){
             affinityMatrix[i][j]=weightFunction(i,j);
 	}
@@ -54,9 +75,9 @@ void NCut::CreateAffinityMatrix(){
 	
 // vytvori degree matici
 void NCut::CreateDegreeMatrix(){
-    degreeMatrix = new double*[nodesCnt];
+    degreeMatrix = new float*[nodesCnt];
     for(int i=0;i<nodesCnt;i++){
-	degreeMatrix[i] = new double[nodesCnt];
+	degreeMatrix[i] = new float[nodesCnt];
 	memset(degreeMatrix[i],0,nodesCnt);	
     }
     for(int item=0;item<nodesCnt;item++){
@@ -66,10 +87,10 @@ void NCut::CreateDegreeMatrix(){
 	}
     }
 }
-// TODO dodělat
-// B = D^(-1/2)*(D-A)*D^(-1/2) 
-// vrati B
-double** NCut::SimplifyEquation(double** D, double** A ){
+// A = D^(-1/2)*(D-A)*D^(-1/2) 
+// ulozi do affinityMatrix
+// je pak možné počítat A*x = labda*x
+void NCut::SimplifyEquation(){
     //A=(D-A)
     for(int i=0;i<nodesCnt;i++){
         for(int j=0;j<nodesCnt;j++){
@@ -77,16 +98,26 @@ double** NCut::SimplifyEquation(double** D, double** A ){
         }
     }
     //D=sqrt(D)
+    //D=D^-1
     for(int i=0;i<nodesCnt;i++){
         degreeMatrix[i][i]=sqrt(degreeMatrix[i][i]);
+        degreeMatrix[i][i]=1.0/degreeMatrix[i][i];
+    }    
+
+    float ** tmp=new float*[nodesCnt];
+    for(int i=0;i<nodesCnt;i++){
+        tmp[i]=new float[nodesCnt];
     }
-    //inverzni matici z degree
-    //inverse(degreeMatrix);
-    //D = D^(-1/2)
-    
-    //maticove nasobeni
-    //B = multiply(multiply(D,A),D)
-    return 0;// return B
+        //maticove nasobeni
+    //A = multiply(multiply(D,A),D)
+    //tmp = D*A
+    MatrixMultiply(degreeMatrix,affinityMatrix,tmp,nodesCnt);
+    //A=tmp*D
+    MatrixMultiply(tmp,degreeMatrix, affinityMatrix,nodesCnt);
+    for(int i=0;i<nodesCnt;i++){
+        delete []tmp[i];
+    }
+    delete[] tmp;
 }
 
 // vypocita vlastni cislo (2nd)
@@ -107,7 +138,7 @@ NCut::NCut(float *** input,int lenght1, int lenght2, int lenght3,int clustersCnt
     nodesCnt=0;
     for(int i=0;i<lenght1;i++){
     	for(int j = 0;j<lenght2;j++){
-        	double color=RGBtoGrey(input[0][i][j],input[1][i][j],input[2][i][j]);
+        	float color=RGBtoGrey(input[0][i][j],input[1][i][j],input[2][i][j]);
                 nodes[nodesCnt++]= new Node(i,j,color);
         }
     }
@@ -120,6 +151,8 @@ NCut::~NCut(){
 void NCut::Segmentation(){
     CreateAffinityMatrix();
     CreateDegreeMatrix();
+    SimplifyEquation();
+    
 }
 
 int** NCut::getResult(){
