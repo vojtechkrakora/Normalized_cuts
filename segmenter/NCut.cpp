@@ -122,18 +122,28 @@ void NCut::SimplifyEquation(){
 
 // vypocita vlastni cislo (2nd)
 void NCut::ComputeEigenValue(){
-	
+    //float *wr = new float[nodesCnt];
+    //prevede do hessenbergovy matice
+    //elmhes(affinityMatrix, nodesCnt);
+    //vypocita vlastni cisla
+    //void hqr(TREAL **a, int n, TREAL wr[], TREAL wi[]);
+    //seradi vlastni cisla
+    //void eigsrt(TREAL *wr, TREAL *wi, int n);
+    
+    //melo by udelat vse najednou
+    //eigs_qr(affinityMatrix, int n, TREAL wr[], TREAL wi[], bool sort);
 }
 // vypocita vlastni vektor
 void NCut::ComputeEigenVector(){
-
+    // vypocitat vektor
 }
 //provede rez
 void NCut::Cut(){
-
+    // rozdělit na 2 grafy a pripadne rekurzivně zavolat podle poctu clusterů
 }
-//TODO ulozit clustersCnt
+
 NCut::NCut(float *** input,int lenght1, int lenght2, int lenght3,int clustersCnt){
+    this->clusterCnt=clustersCnt;
     nodes= new Node*[lenght1*lenght2];
     nodesCnt=0;
     for(int i=0;i<lenght1;i++){
@@ -152,7 +162,9 @@ void NCut::Segmentation(){
     CreateAffinityMatrix();
     CreateDegreeMatrix();
     SimplifyEquation();
-    
+    ComputeEigenValue();
+    ComputeEigenVector();
+    Cut();
 }
 
 int** NCut::getResult(){
