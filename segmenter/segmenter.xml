@@ -6,7 +6,7 @@
   <section name="run_!0">
     <var name="nr"          rem="size of the input image (rows)"> 32 </var>
     <var name="nc"          rem="size of the input image (columns)"> 32 </var>
-    <var name="ImgFile"     rem="input image filename"> "data/tm0_1_1" </var>
+    <var name="ImgFile"     rem="input image filename"> "data/tm1_1_1" </var>
     <var name="ImgType"     rem="input image type"> 301 </var>
     <var name="planes"      rem="number of input image planes"> 3 </var>
     <var name="clusters"    rem="number of clusters"> 2 </var>
