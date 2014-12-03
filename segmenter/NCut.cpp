@@ -130,12 +130,24 @@ void NCut::SimplifyEquation(){
 void NCut::ComputeEigenValue(){
     float *wr = new float[nodesCnt];
     float *wi = new float[nodesCnt];
+    float ** tmp_matrix; // protoze eigs_qr vstupni matici znici
+    
+    tmp_matrix = new float*[nodesCnt];
+    for(int i=0;i<nodesCnt+1;i++){
+    	tmp_matrix[i] = new float[nodesCnt+1];
+    }
+    
+    for(int i = 1; i < nodesCnt+1; i++)
+    {
+        for(int j = 1; j < nodesCnt+1;j++)
+            tmp_matrix[j][i] = affinityMatrix[j][i];
+    }
     
     // Do wr[] vypocte vsechna vlastni cisla a seradi je sestupne.
-    eigs_qr(affinityMatrix, nodesCnt, wr, wi, SORT);
+    eigs_qr(tmp_matrix, nodesCnt, wr, wi, SORT);
     
     /*Radeji kontrola, protoze z wr budeme brat vzdy hodnotu na druhem miste */
-    if(nodesCnt == 1)
+    if(nodesCnt <= 1)
         printf("Error nodesCnt is low value: %d. Eigenvalue can't be valid.\n",
                 nodesCnt);
     
