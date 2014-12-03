@@ -2,7 +2,6 @@
 #define NCUT_H
 
 #define SORT true
-#define EIG_VAL 2
 
 class Node{
 public:

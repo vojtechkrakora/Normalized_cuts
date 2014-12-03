@@ -151,8 +151,8 @@ void NCut::ComputeEigenValue(){
         printf("Error nodesCnt is low value: %d. Eigenvalue can't be valid.\n",
                 nodesCnt);
     
-    /*Nastaveni druheho vlastniho cisla*/
-    eigenvalue = wr[EIG_VAL];
+    /*Nastaveni druheho nejmensiho vlastniho cisla*/
+    eigenvalue = wr[nodesCnt-1];
 }
 // vypocita vlastni vektor
 void NCut::ComputeEigenVector(){
