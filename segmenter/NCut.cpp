@@ -3,7 +3,11 @@
 #include <cmath>
 #include <cstring>
 #include <cstdio>
+#include <Eigen/Dense>
+#include <Eigen/Eigenvalues>
 
+using namespace Eigen;
+using Eigen::MatrixXd;
 
 //nasobení matic... mozna optimalizace pro diagonalni matice
 //predelano na indexovani od 1
@@ -156,7 +160,33 @@ void NCut::ComputeEigenValue(){
 }
 // vypocita vlastni vektor
 void NCut::ComputeEigenVector(){
-    // vypocitat vektor
+    MatrixXd matrix(nodesCnt,nodesCnt);
+    
+    /* Naplni se matrix hodnotama affinityMatrix 
+     * MatrixXd ma obracene souradnice a cisluje od nuly
+     * viz http://eigen.tuxfamily.org/dox/group__matrixtypedefs.html#ga0750af9a6b82761985a15fe77256de87
+     */
+    for(int i = 0; i < nodesCnt; i++)
+    {
+        for(int j = 0; j < nodesCnt; j++)
+        {
+            matrix(i,j) = affinityMatrix[j+1][i+1];
+        }
+    }
+    
+    /* Vyreseni veskerych vlastnich cisel a vektoru, ulozeno v promenne
+     * solved_eigen_problem.
+     * http://eigen.tuxfamily.org/dox/classEigen_1_1EigenSolver.html
+     */
+    EigenSolver<MatrixXd> solved_eigen_problem(matrix);
+    
+    /* Ulozeni hodnot do vlastniho vektoru. .real() tam je aby to nebylo v 
+     * komplexnim cisle, tak vyjadrujeme pouze jeji realnou slozku.
+     */
+    for(int i = 1; i < nodesCnt+1; i++)
+    {
+        eigenvector[i] = solved_eigen_problem.eigenvectors().real()(i-1,nodesCnt-1-1);
+    }
 }
 //provede rez
 void NCut::Cut(){
@@ -176,9 +206,12 @@ NCut::NCut(float *** input,int lenght1, int lenght2, int lenght3,int clustersCnt
     }
     this->lenght1=lenght1;
     this->lenght2=lenght2;
+    this->eigenvector = new float[nodesCnt];
 }   
 NCut::~NCut(){
     //TODO
+    
+    delete(this->eigenvector);
 }
 void NCut::Segmentation(){
     CreateAffinityMatrix();
