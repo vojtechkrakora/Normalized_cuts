@@ -190,7 +190,36 @@ void NCut::ComputeEigenVector(){
 }
 //provede rez
 void NCut::Cut(){
-    // rozdělit na 2 grafy a pripadne rekurzivně zavolat podle poctu clusterů
+    
+    float threshold = eigenvector[16*32+1];
+    
+    for(int i = 1; i < nodesCnt+1; i++)
+    {
+        threshold += eigenvector[i];
+    }
+    threshold /= nodesCnt;
+    
+    for(int i = 1; i < nodesCnt+1; i++)
+    {
+        if(eigenvector[i] < threshold)
+        {
+            nodes[i]->cluster = 0;
+        } else
+        {
+            nodes[i]->cluster = 1;
+        }
+    }
+    
+    for(int i = 1; i < nodesCnt+1; i++)
+    {
+        if((i-1)%32 == 0)
+        {
+            printf("\n");
+        }
+        
+        printf("%.2f|",nodes[i]->color);
+        //printf("%d",nodes[i]->cluster);
+    }
 }
 
 NCut::NCut(float *** input,int lenght1, int lenght2, int lenght3,int clustersCnt){

@@ -2,11 +2,13 @@
 #define NCUT_H
 
 #define SORT true
+#define THRESHOLD 0.0
 
 class Node{
 public:
 	int x;
 	int y;
+        int cluster;
 	float color;
 	Node(int x,int y,float color){
 		this->x=x;
