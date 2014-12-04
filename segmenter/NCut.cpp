@@ -192,12 +192,13 @@ void NCut::ComputeEigenVector(){
 void NCut::Cut(){
     
     float threshold = eigenvector[16*32+1];
+    //float threshold = 0.0;
     
     for(int i = 1; i < nodesCnt+1; i++)
     {
         threshold += eigenvector[i];
     }
-    threshold /= nodesCnt;
+    //threshold /= nodesCnt;
     
     for(int i = 1; i < nodesCnt+1; i++)
     {
@@ -217,8 +218,8 @@ void NCut::Cut(){
             printf("\n");
         }
         
-        printf("%.2f|",nodes[i]->color);
-        //printf("%d",nodes[i]->cluster);
+        //printf("%.2f|",nodes[i]->color);
+        printf("%d ",nodes[i]->cluster);
     }
 }
 
