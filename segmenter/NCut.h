@@ -3,6 +3,7 @@
 
 #define SORT true
 #define THRESHOLD 0.0
+#include <cstdio>
 
 class Node{
 public:
@@ -15,6 +16,10 @@ public:
 		this->y=y;
 		this->color=color;
 	}
+        void print()
+        {
+            printf("[%d,%d], color = %f.\n",this->x,this->y,this->color);
+        }
 };
 
 class NCut{

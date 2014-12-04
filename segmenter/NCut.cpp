@@ -29,6 +29,18 @@ using Eigen::MatrixXd;
     return matC;
 }*/
 
+void print_matrix(float ** matrix, int size)
+{
+    for(int i = 1; i <= size; i++)
+    {
+        for(int j = 1; j<= size; j++)
+        {
+            printf("%f ",matrix[j][i]);
+        }
+        printf("\n");
+    }
+}
+
 float RGBtoGreyLuminosity(float r, float g, float b){
     return ((0.21*r)+(0.72*g)+(0.07*b));
 }
@@ -57,6 +69,8 @@ float NCut::weightFunction(int node1, int node2){
     float sigma=2.0;
     Node* n1 = nodes[node1];
     Node* n2 = nodes[node2];
+    n1->print();
+    n2->print();
     float distance = sqrt((n1->x-n2->x)*(n1->x-n2->x)
         + (n1->y-n2->y)*(n1->y-n2->y));
     distance/=sigma;
@@ -64,6 +78,8 @@ float NCut::weightFunction(int node1, int node2){
     float affinity=fabs(n1->color-n2->color);
     affinity/=sigma;
     affinity=exp((-1)*affinity);
+    
+    printf("Weight %f.\n",affinity*distance);
     return affinity*distance;
 }
 
@@ -71,12 +87,14 @@ float NCut::weightFunction(int node1, int node2){
 void NCut::CreateAffinityMatrix(){
     int size=nodesCnt+1; //indexovani od 1
     affinityMatrix = new float*[size];
-    for(int i=0;i<size;i++){
+    for(int i=1;i<size;i++){
     	affinityMatrix[i] = new float[size];
-    	for(int j=i;j<size;j++){
+    	for(int j=1;j<size;j++){
             affinityMatrix[i][j]=weightFunction(i,j);
 	}
     }
+    
+    print_matrix(affinityMatrix,nodesCnt);
 }
 	
 // vytvori degree matici
@@ -183,16 +201,16 @@ void NCut::ComputeEigenVector(){
     /* Ulozeni hodnot do vlastniho vektoru. .real() tam je aby to nebylo v 
      * komplexnim cisle, tak vyjadrujeme pouze jeji realnou slozku.
      */
-    for(int i = 1; i < nodesCnt+1; i++)
+    for(int i = 1; i < nodesCnt; i++)
     {
-        eigenvector[i] = solved_eigen_problem.eigenvectors().real()(i-1,nodesCnt-1-1);
+        //eigenvector[i] = solved_eigen_problem.eigenvectors().real()(i-1,nodesCnt-1-1);
     }
 }
 //provede rez
 void NCut::Cut(){
     
-    float threshold = eigenvector[16*32+1];
-    //float threshold = 0.0;
+    //float threshold = eigenvector[16*32+1];
+    float threshold = 0.0;
     
     for(int i = 1; i < nodesCnt+1; i++)
     {
@@ -202,7 +220,7 @@ void NCut::Cut(){
     
     for(int i = 1; i < nodesCnt+1; i++)
     {
-        if(eigenvector[i] < threshold)
+        if(eigenvector[i] < threshold) /*TODO*/
         {
             nodes[i]->cluster = 0;
         } else
@@ -213,7 +231,7 @@ void NCut::Cut(){
     
     for(int i = 1; i < nodesCnt+1; i++)
     {
-        if((i-1)%32 == 0)
+        if((i-1)%3 == 0)
         {
             printf("\n");
         }
@@ -236,7 +254,7 @@ NCut::NCut(float *** input,int lenght1, int lenght2, int lenght3,int clustersCnt
     }
     this->lenght1=lenght1;
     this->lenght2=lenght2;
-    this->eigenvector = new float[nodesCnt];
+    this->eigenvector = new float[nodesCnt+1];
 }   
 NCut::~NCut(){
     //TODO
@@ -247,7 +265,7 @@ void NCut::Segmentation(){
     CreateAffinityMatrix();
     CreateDegreeMatrix();
     SimplifyEquation();
-    ComputeEigenValue();
+   // ComputeEigenValue();
     ComputeEigenVector();
     Cut();
 }

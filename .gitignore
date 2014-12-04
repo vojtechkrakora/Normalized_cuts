@@ -7,5 +7,5 @@
 *.txt#
 #ignore segmenter binary
 segmenter/segmenter
-./segmenter/results/*
+segmenter/results/
 segmenter/nbproject/
