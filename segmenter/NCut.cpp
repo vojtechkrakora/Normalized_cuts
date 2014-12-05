@@ -147,7 +147,7 @@ void NCut::SimplifyEquation(){
     //A=tmp*D
     MatrixMultipl(tmp, nodesCnt,nodesCnt,degreeMatrix, nodesCnt, nodesCnt, affinityMatrix);
     //MatrixMultiply(tmp,degreeMatrix, affinityMatrix,nodesCnt); -- stara funkce pak smazat
-    for(int i=1;i<nodesCnt+1;i++){
+    for(int i=0;i<nodesCnt+1;i++){
         delete []tmp[i];
     }
     delete[] tmp;
@@ -264,6 +264,22 @@ NCut::NCut(float *** input,int lenght1, int lenght2, int lenght3,int clustersCnt
 NCut::~NCut(){
     //TODO
     
+    for(int i=0;i<nodesCnt+1;i++){
+            delete [] degreeMatrix[i];
+            
+            if(i > 0)
+                delete [] affinityMatrix[i];
+    }
+    
+    
+    for(int i = 1; i < nodesCnt+1;i++)
+    {
+        delete nodes[i];
+    }
+    
+    delete [] nodes;
+    delete [] affinityMatrix;
+    delete [] degreeMatrix;
     delete [] eigenvector;
 }
 void NCut::Segmentation(){
