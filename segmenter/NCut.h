@@ -31,7 +31,7 @@ private:
     int nodesCnt;
     float ** affinityMatrix;		//matice podobnosti
     float ** degreeMatrix;			//matice degree
-    int *** resultMatrix;			//vysledna segmentace
+    int ** resultMatrix;			//vysledna segmentace
     float eigenvalue;				//vlastni cislo 2nd
     float * eigenvector;			//vlastni vektor
 
@@ -42,7 +42,6 @@ private:
     float weightFunction(int node1, int node2);
     void CreateAffinityMatrix();	// vytvori matici podobnosti
     void CreateDegreeMatrix(); 		// vytvori degree matici
-    void ComputeEigenValue();		// vypocita vlastni cislo (2nd)
     void ComputeEigenVector();		// vypocita vlastni vektor
     void Cut();				// provede rez
 	

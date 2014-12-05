@@ -4,8 +4,8 @@
   <var name="from"        rem="run from"> 0 </var>
   <var name="prefix"      rem="section prefix"> run </var>
   <section name="run_!0">
-    <var name="nr"          rem="size of the input image (rows)"> 3 </var>
-    <var name="nc"          rem="size of the input image (columns)"> 3 </var>
+    <var name="nr"          rem="size of the input image (rows)"> 5 </var>
+    <var name="nc"          rem="size of the input image (columns)"> 5 </var>
     <var name="ImgFile"     rem="input image filename"> "data/tm1_1_1" </var>
     <var name="ImgType"     rem="input image type"> 301 </var>
     <var name="planes"      rem="number of input image planes"> 3 </var>

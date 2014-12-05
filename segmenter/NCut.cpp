@@ -5,9 +5,14 @@
 #include <cstdio>
 #include <Eigen/Dense>
 #include <Eigen/Eigenvalues>
+#include <iostream>
 
 using namespace Eigen;
 using Eigen::MatrixXd;
+
+bool AreSameFloats(float a, float b) {
+    return std::fabs(a - b) < std::numeric_limits<float>::epsilon();
+}
 
 //nasobení matic... mozna optimalizace pro diagonalni matice
 //predelano na indexovani od 1
@@ -31,14 +36,18 @@ using Eigen::MatrixXd;
 
 void print_matrix(float ** matrix, int size)
 {
+    printf("{");
     for(int i = 1; i <= size; i++)
     {
+        printf("{");
         for(int j = 1; j<= size; j++)
         {
-            printf("%f ",matrix[j][i]);
+            printf("%f,",matrix[j][i]);
         }
         printf("\n");
+        printf("},");
     }
+    printf("}");
 }
 
 float RGBtoGreyLuminosity(float r, float g, float b){
@@ -153,34 +162,6 @@ void NCut::SimplifyEquation(){
     delete[] tmp;
 }
 
-// vypocita vlastni cislo (2nd)
-void NCut::ComputeEigenValue(){
-    float *wr = new float[nodesCnt];
-    float *wi = new float[nodesCnt];
-    float ** tmp_matrix; // protoze eigs_qr vstupni matici znici
-    
-    tmp_matrix = new float*[nodesCnt];
-    for(int i=0;i<nodesCnt+1;i++){
-    	tmp_matrix[i] = new float[nodesCnt+1];
-    }
-    
-    for(int i = 1; i < nodesCnt+1; i++)
-    {
-        for(int j = 1; j < nodesCnt+1;j++)
-            tmp_matrix[j][i] = affinityMatrix[j][i];
-    }
-    
-    // Do wr[] vypocte vsechna vlastni cisla a seradi je sestupne.
-    eigs_qr(tmp_matrix, nodesCnt, wr, wi, SORT);
-    
-    /*Radeji kontrola, protoze z wr budeme brat vzdy hodnotu na druhem miste */
-    if(nodesCnt <= 1)
-        printf("Error nodesCnt is low value: %d. Eigenvalue can't be valid.\n",
-                nodesCnt);
-    
-    /*Nastaveni druheho nejmensiho vlastniho cisla*/
-    eigenvalue = wr[nodesCnt-1];
-}
 // vypocita vlastni vektor
 void NCut::ComputeEigenVector(){
     MatrixXd matrix(nodesCnt,nodesCnt);
@@ -201,21 +182,39 @@ void NCut::ComputeEigenVector(){
      * solved_eigen_problem.
      * http://eigen.tuxfamily.org/dox/classEigen_1_1EigenSolver.html
      */
-    EigenSolver<MatrixXd> solved_eigen_problem(matrix);
+    EigenSolver<MatrixXd> es(matrix);
     
     /* Ulozeni hodnot do vlastniho vektoru. .real() tam je aby to nebylo v 
      * komplexnim cisle, tak vyjadrujeme pouze jeji realnou slozku.
      */
-    for(int i = 1; i < nodesCnt+1; i++)
-    {
-        eigenvector[i] = solved_eigen_problem.eigenvectors().real()(i-1,nodesCnt-1-1);
+    float * eigenvalues = new float[nodesCnt];
+    //nacte eigenvalues
+    for(int i=0;i<nodesCnt;i++){
+        eigenvalues[i]=es.eigenvalues().real()(i);
     }
+    //seradi je podle velikosti
+    std::sort(eigenvalues, eigenvalues + nodesCnt, std::greater<float>());
+    //druhe nejmensi
+    eigenvalue=eigenvalues[nodesCnt-1];
+    int eigenvalueIndex=-1;
+    //najde kde se nachazíi druhe nejmensi vlastni cislo
+    for(int i = 0;i<nodesCnt;i++){
+        if(AreSameFloats(es.eigenvalues().real()(i),eigenvalue)){
+            eigenvalueIndex=i;
+            break;
+        }
+    }
+    //vlastni vektor
+    for(int i = 1; i < nodesCnt+1; i++){
+        eigenvector[i] = es.eigenvectors().real()(i-1,eigenvalueIndex);
+    }
+    delete []eigenvalues;
 }
+
 //provede rez
-void NCut::Cut(){
+void NCut::Cut(){  
     
-    //float threshold = eigenvector[16*32+1];
-    float threshold = 0.00;
+    float threshold = 0.00;   
     
     for(int i = 1; i < nodesCnt+1; i++)
     {
@@ -226,7 +225,6 @@ void NCut::Cut(){
     printf("Threshold is %f .\n",threshold);
     for(int i = 1; i < nodesCnt+1; i++)
     {
-        printf("eigenvector[%i] = %f .\n",i,eigenvector[i]);
         if(eigenvector[i] < threshold) /*TODO*/
         {
             nodes[i]->cluster = 0;
@@ -238,12 +236,10 @@ void NCut::Cut(){
     
     for(int i = 1; i < nodesCnt+1; i++)
     {
-        if((i-1)%3 == 0)
+        if((i-1)%lenght1 == 0)
         {
             printf("\n");
         }
-        
-        //printf("%.2f|",nodes[i]->color);
         printf("%d ",nodes[i]->cluster);
     }
 }
@@ -257,7 +253,9 @@ NCut::NCut(float *** input,int lenght1, int lenght2, int lenght3,int clustersCnt
         	float color=RGBtoGrey(input[0][i][j],input[1][i][j],input[2][i][j]);
                 nodes[nodesCnt+1]= new Node(i+1,j+1,color);
                 nodesCnt++;
+                printf("%02.1f ",color);
         }
+        printf("\n");
     }
     this->lenght1=lenght1;
     this->lenght2=lenght2;
@@ -288,7 +286,6 @@ void NCut::Segmentation(){
     CreateAffinityMatrix();
     CreateDegreeMatrix();
     SimplifyEquation();
-   // ComputeEigenValue();
     ComputeEigenVector();
     Cut();
 }
