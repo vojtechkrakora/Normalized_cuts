@@ -206,7 +206,7 @@ void NCut::ComputeEigenVector(){
     /* Ulozeni hodnot do vlastniho vektoru. .real() tam je aby to nebylo v 
      * komplexnim cisle, tak vyjadrujeme pouze jeji realnou slozku.
      */
-    for(int i = 1; i < nodesCnt; i++)
+    for(int i = 1; i < nodesCnt+1; i++)
     {
         eigenvector[i] = solved_eigen_problem.eigenvectors().real()(i-1,nodesCnt-1-1);
     }
@@ -263,6 +263,8 @@ NCut::NCut(float *** input,int lenght1, int lenght2, int lenght3,int clustersCnt
 }   
 NCut::~NCut(){
     //TODO
+    
+    delete [] eigenvector;
 }
 void NCut::Segmentation(){
     CreateAffinityMatrix();
