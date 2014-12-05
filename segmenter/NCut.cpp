@@ -215,16 +215,17 @@ void NCut::ComputeEigenVector(){
 void NCut::Cut(){
     
     //float threshold = eigenvector[16*32+1];
-    float threshold = 0.0;
+    float threshold = 0.00;
     
     for(int i = 1; i < nodesCnt+1; i++)
     {
         threshold += eigenvector[i];
     }
-    //threshold /= nodesCnt;
+    threshold /= nodesCnt;
     
     for(int i = 1; i < nodesCnt+1; i++)
     {
+        printf("eigenvector[%i] = %f .\n",i,eigenvector[i]);
         if(eigenvector[i] < threshold) /*TODO*/
         {
             nodes[i]->cluster = 0;
