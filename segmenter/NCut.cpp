@@ -223,6 +223,7 @@ void NCut::Cut(){
     }
     threshold /= nodesCnt;
     
+    printf("Threshold is %f .\n",threshold);
     for(int i = 1; i < nodesCnt+1; i++)
     {
         printf("eigenvector[%i] = %f .\n",i,eigenvector[i]);
