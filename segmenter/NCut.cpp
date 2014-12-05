@@ -69,8 +69,8 @@ float NCut::weightFunction(int node1, int node2){
     float sigma=2.0;
     Node* n1 = nodes[node1];
     Node* n2 = nodes[node2];
-    n1->print();
-    n2->print();
+    //n1->print();
+    //n2->print();
     float distance = sqrt((n1->x-n2->x)*(n1->x-n2->x)
         + (n1->y-n2->y)*(n1->y-n2->y));
     distance/=sigma;
@@ -79,7 +79,7 @@ float NCut::weightFunction(int node1, int node2){
     affinity/=sigma;
     affinity=exp((-1)*affinity);
     
-    printf("Weight %f.\n",affinity*distance);
+    //printf("Weight %f.\n",affinity*distance);
     return affinity*distance;
 }
 
@@ -94,22 +94,27 @@ void NCut::CreateAffinityMatrix(){
 	}
     }
     
-    print_matrix(affinityMatrix,nodesCnt);
+    //print_matrix(affinityMatrix,nodesCnt);
 }
 	
 // vytvori degree matici
 // predelano na indexovani od 1
 void NCut::CreateDegreeMatrix(){
     int size=nodesCnt+1; // kvuli indexovani od 1
+    float tmp = 0.0;
     degreeMatrix = new float*[size];
+    
     for(int i=0;i<size;i++){
 	degreeMatrix[i] = new float[size];
-	memset(degreeMatrix[i],0,size);	
+        for(int j = 0;j <size; j++)
+            degreeMatrix[i][j] = 0;
     }
+    
     for(int item=1;item<size;item++){
 	for(int i=1;i<nodesCnt+1;i++){
             if(i==item)continue; // hadam ze se nema zapocitavat on sam
             degreeMatrix[item][item]+=weightFunction(item,i);
+            tmp +=weightFunction(item,i);
 	}
     }
 }
@@ -127,7 +132,7 @@ void NCut::SimplifyEquation(){
     //D=sqrt(D)
     //D=D^-1
     for(int i=1;i<nodesCnt+1;i++){
-        degreeMatrix[i][i]=sqrt(degreeMatrix[i][i]);
+        degreeMatrix[i][i]= sqrt(degreeMatrix[i][i]);
         degreeMatrix[i][i]=1.0/degreeMatrix[i][i];
     }    
 
@@ -203,7 +208,7 @@ void NCut::ComputeEigenVector(){
      */
     for(int i = 1; i < nodesCnt; i++)
     {
-        //eigenvector[i] = solved_eigen_problem.eigenvectors().real()(i-1,nodesCnt-1-1);
+        eigenvector[i] = solved_eigen_problem.eigenvectors().real()(i-1,nodesCnt-1-1);
     }
 }
 //provede rez
@@ -258,8 +263,6 @@ NCut::NCut(float *** input,int lenght1, int lenght2, int lenght3,int clustersCnt
 }   
 NCut::~NCut(){
     //TODO
-    
-    delete(this->eigenvector);
 }
 void NCut::Segmentation(){
     CreateAffinityMatrix();

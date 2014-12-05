@@ -5,7 +5,11 @@
 #ignore matlab executions files and other matlab files
 *.mexa64
 *.txt#
+*.swp
 #ignore segmenter binary
 segmenter/segmenter
 segmenter/results/
 segmenter/nbproject/
+segmenter/results/feat0_1_1.png
+segmenter/results/seg0_1_1.png
+

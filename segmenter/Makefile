@@ -6,7 +6,7 @@ segmenter:	main.cpp Segmenter.cpp
 	@echo
 	@echo VR FIT Segmenter building.
 	@echo
-	g++ -O -Wall -o segmenter main.cpp Segmenter.cpp NCut.cpp -Ivr_fit -Lvr_fit -lvr_fit -lm -ldl -g
+	g++ -O -Wall -o segmenter main.cpp Segmenter.cpp NCut.cpp -Ivr_fit -Lvr_fit -lvr_fit -lm -ldl -g -lm
 	@echo Compilation successfully finished.
 	@echo
 
