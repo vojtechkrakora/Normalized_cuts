@@ -13,3 +13,6 @@ segmenter:	main.cpp Segmenter.cpp
 clean: 
 	@rm -f segmenter
 	@rm -rf results
+
+valgrind: main.cpp Segmenter.cpp
+	valgrind --leak-check=full -v ./segmenter segmenter.xml
