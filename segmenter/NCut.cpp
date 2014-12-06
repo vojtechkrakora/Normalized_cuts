@@ -6,6 +6,7 @@
 #include <Eigen/Dense>
 #include <Eigen/Eigenvalues>
 #include <iostream>
+#include <climits>
 
 using namespace Eigen;
 using Eigen::MatrixXd;
@@ -163,7 +164,7 @@ void NCut::SimplifyEquation(){
 }
 
 // vypocita vlastni vektor
-void NCut::ComputeEigenVector(){
+void NCut::ComputeEigenVector(int eigvalOffset){
     MatrixXd matrix(nodesCnt,nodesCnt);
     
     /* Naplni se matrix hodnotama affinityMatrix 
@@ -191,6 +192,7 @@ void NCut::ComputeEigenVector(){
     //nacte eigenvalues
     for(int i=0;i<nodesCnt;i++){
         eigenvalues[i]=es.eigenvalues().real()(i);
+        printf("[%d], eigval = %f .\n",i,eigenvalues[i]);
     }
     //seradi je podle velikosti
     std::sort(eigenvalues, eigenvalues + nodesCnt, std::greater<float>());
@@ -204,17 +206,22 @@ void NCut::ComputeEigenVector(){
             break;
         }
     }
+    
+    eigenvalueIndex+=eigvalOffset;
+    
     //vlastni vektor
     for(int i = 1; i < nodesCnt+1; i++){
-        eigenvector[i] = es.eigenvectors().real()(i-1,eigenvalueIndex);
+        eigenvector[i] = es.eigenvectors().real()(i-1,eigenvalueIndex)*1000;
     }
     delete []eigenvalues;
 }
 
 //provede rez
-void NCut::Cut(){  
-    
+void NCut::Cut(){      
     float threshold = 0.00;   
+    float cluster1_max = INT_MIN, cluster2_max = INT_MIN, 
+            cluster1_min = INT_MAX, cluster2_min = INT_MAX;
+    float ratio1, ratio2;
     
     for(int i = 1; i < nodesCnt+1; i++)
     {
@@ -225,13 +232,34 @@ void NCut::Cut(){
     printf("Threshold is %f .\n",threshold);
     for(int i = 1; i < nodesCnt+1; i++)
     {
+        // uzel uz je v kompletnim clusteru
+        if(nodes[i]->isInCluster)
+            continue;
+        
         if(eigenvector[i] < threshold) /*TODO*/
         {
-            nodes[i]->cluster = 0;
+            nodes[i]->cluster = this->nextClusterID;
+            if(eigenvector[i] > cluster1_max)
+                cluster1_max = eigenvector[i];
+            if(eigenvector[i] < cluster1_min)
+                cluster1_min = eigenvector[i];
         } else
         {
-            nodes[i]->cluster = 1;
+            nodes[i]->cluster = this->nextClusterID+1;
+            if(eigenvector[i] > cluster2_max)
+                cluster2_max = eigenvector[i];
+            if(eigenvector[i] < cluster2_min)
+                cluster2_min = eigenvector[i];
         }
+    }
+    
+    for(int i = 1; i < nodesCnt+1; i++)
+    {
+        if((i-1)%lenght1 == 0)
+        {
+            printf("\n");
+        }
+        printf("%f ",eigenvector[i]);
     }
     
     for(int i = 1; i < nodesCnt+1; i++)
@@ -242,6 +270,35 @@ void NCut::Cut(){
         }
         printf("%d ",nodes[i]->cluster);
     }
+    
+    // vypocita pomery obou clusteru
+    ratio1 = getClusterRatio(cluster1_max, cluster1_min);
+    ratio2 = getClusterRatio(cluster2_max, cluster2_min);
+    
+    //uzly v pevnych clusterech nalezite oznacime
+    if(ratio1 > IDEAL_RATIO)
+    {
+        for(int i = 1; i < nodesCnt+1; i++)
+        {
+            if(nodes[i]->cluster == nextClusterID)
+                nodes[i]->isInCluster = true;
+        }
+    }
+    
+    if(ratio2 > IDEAL_RATIO)
+    {
+        for(int i = 1; i < nodesCnt+1; i++)
+        {
+            if(nodes[i]->cluster == nextClusterID+1)
+                nodes[i]->isInCluster = true;
+        }
+    }
+    
+    // preskakuje oba predchozi clustery, aby nevznikla kolize
+    this->nextClusterID += 2;
+       
+    
+    
 }
 
 NCut::NCut(float *** input,int lenght1, int lenght2, int lenght3,int clustersCnt){
@@ -260,6 +317,7 @@ NCut::NCut(float *** input,int lenght1, int lenght2, int lenght3,int clustersCnt
     this->lenght1=lenght1;
     this->lenght2=lenght2;
     this->eigenvector = new float[nodesCnt+1];
+    this->nextClusterID = 0;
 }   
 NCut::~NCut(){
     //TODO
@@ -286,11 +344,47 @@ void NCut::Segmentation(){
     CreateAffinityMatrix();
     CreateDegreeMatrix();
     SimplifyEquation();
-    ComputeEigenVector();
-    Cut();
+    for(int i = 0; i< clusterCnt-1; i++)
+    {
+        ComputeEigenVector(i);
+        Cut();
+    }
 }
 
 int** NCut::getResult(){
 
     return 0;
+}
+
+float NCut::getClusterRatio(float max, float min)
+{
+    float tmp;
+    
+    if(max < 0 && min > 0)
+    {
+        printf("Error. Probably are swaped input variables max(=%f) and"
+                " min(=%f).\n",max,min);
+        exit(0);
+    }
+    
+    // pripad opacnych znamenek by nemel byt v jednom clusteru
+    if(max > 0 && min < 0)
+        return 0.0; 
+    
+    //min a max jsou zaporna, vypocteme abs hodnotu a vymenime min a max
+    if(max < 0)
+    {
+        tmp = fabs(max);
+        max = fabs(min);
+        min = tmp;
+    }
+    
+    if(AreSameFloats(max,0.0))
+    {
+        printf("Error. Max is %f (Min is %f). Can't divide with zero.\n",max,
+                min);
+        exit(0);
+    }
+    
+    return (min/max);
 }

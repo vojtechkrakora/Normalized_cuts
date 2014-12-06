@@ -1,9 +1,10 @@
 #ifndef NCUT_H
 #define NCUT_H
+#include <cstdio>
 
 #define SORT true
 #define THRESHOLD 0.0
-#include <cstdio>
+#define IDEAL_RATIO 0.06 // Toto cislo je prevzato primo z clanku od Malik, Shi.
 
 class Node{
 public:
@@ -11,10 +12,12 @@ public:
 	int y;
         int cluster;
 	float color;
+        bool isInCluster;
 	Node(int x,int y,float color){
 		this->x=x;
 		this->y=y;
 		this->color=color;
+                this->isInCluster = false;
 	}
         void print()
         {
@@ -34,7 +37,8 @@ private:
     int ** resultMatrix;			//vysledna segmentace
     float eigenvalue;				//vlastni cislo 2nd
     float * eigenvector;			//vlastni vektor
-
+    int nextClusterID;
+     
     int countPosition(int x,int y);
     void countCoords(int &x, int &y, int position);
 
@@ -42,8 +46,9 @@ private:
     float weightFunction(int node1, int node2);
     void CreateAffinityMatrix();	// vytvori matici podobnosti
     void CreateDegreeMatrix(); 		// vytvori degree matici
-    void ComputeEigenVector();		// vypocita vlastni vektor
+    void ComputeEigenVector(int eigvalOffset = 0);		// vypocita vlastni vektor
     void Cut();				// provede rez
+    float getClusterRatio(float max, float min); //zjisti pomer, dle ktereho pozna, jestli jde uz o cely cluster nebo se bude dal delit
 	
 public:
     NCut(float *** input,int lenght1, int lenght2, int lenght3, int clusterCnt); // vyplni inputMatrix ("splacne")

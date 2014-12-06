@@ -9,7 +9,7 @@
     <var name="ImgFile"     rem="input image filename"> "data/tm1_1_1" </var>
     <var name="ImgType"     rem="input image type"> 301 </var>
     <var name="planes"      rem="number of input image planes"> 3 </var>
-    <var name="clusters"    rem="number of clusters"> 2 </var>
+    <var name="clusters"    rem="number of clusters"> 3 </var>
     <var name="iterations"  rem="maximum number of iterations"> 4 </var>
     <var name="neigh"       rem="neighbourhood weight (0 .. w/o neighbourhood)"> 64 </var>
     <var name="norm"        rem="normalize values? (0/1)"> 1 </var>
