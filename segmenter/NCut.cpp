@@ -296,12 +296,48 @@ void NCut::Cut(){
     
     // preskakuje oba predchozi clustery, aby nevznikla kolize
     this->nextClusterID += 2;
-       
-    
-    
+           
 }
 
-NCut::NCut(float *** input,int lenght1, int lenght2, int lenght3,int clustersCnt){
+float *** NCut::resizeInput(float ***img,int &lenght1, int &lenght2){
+    int resizeTo=RESIZE;
+    
+    this->originalLenght1=lenght1;
+    this->originalLenght2=lenght2;
+    if(lenght1<=resizeTo) return img;
+    
+    lenght1=resizeTo;
+    lenght2=resizeTo;
+    int shrinkRatio=originalLenght1/lenght1;
+    
+    float *** input = new float**[3];
+    for(int i=0;i<3;i++){
+        input[i]=new float*[lenght1];
+        for(int j=0;j<lenght1;j++){
+            input[i][j]=new float[lenght2];
+        }
+    }
+    for(int i=0;i<3;i++){
+        for(int j=0;j<lenght1;j++){
+            for(int k=0;k<lenght2;k++){
+                float avg=0;
+                for(int x=shrinkRatio*j;x<(shrinkRatio*j+shrinkRatio);x++){
+                    for(int y=shrinkRatio*k;y<(shrinkRatio*k+shrinkRatio);y++){
+                     avg+=img[i][x][y];   
+                    }
+                }
+                avg/=(shrinkRatio*shrinkRatio);
+                input[i][j][k]=avg;
+            }
+        }
+    }
+    printf("image resized");
+    return input;
+}
+
+NCut::NCut(float *** img,int lenght1, int lenght2, int clustersCnt){
+    float *** input;
+    input=resizeInput(img,lenght1,lenght2);
     this->clusterCnt=clustersCnt;
     nodes= new Node*[(lenght1*lenght2)+1];
     nodesCnt=0;
@@ -318,10 +354,19 @@ NCut::NCut(float *** input,int lenght1, int lenght2, int lenght3,int clustersCnt
     this->lenght2=lenght2;
     this->eigenvector = new float[nodesCnt+1];
     this->nextClusterID = 0;
+    if(this->originalLenght1!=lenght1){
+        for(int i=0;i<3;i++){
+            for(int j=0;j<lenght1;j++){
+                delete [] input[i][j];
+            }
+            delete[]input[i];
+        }        
+        delete[] input;
+    }
 }   
 NCut::~NCut(){
     //TODO
-    
+        
     for(int i=0;i<nodesCnt+1;i++){
             delete [] degreeMatrix[i];
             
@@ -351,9 +396,25 @@ void NCut::Segmentation(){
     }
 }
 
+//TODO otestovat
 int** NCut::getResult(){
-
-    return 0;
+    int ** result = new int*[originalLenght1];
+    for(int i = 0;i<originalLenght1;i++){
+        result[i]= new int[originalLenght1];
+    }
+    int shrinkRatio=originalLenght1/lenght1;
+    int nodeCounter=1;
+    for(int i=0;i<lenght1;i++){
+        for(int j=0;j<lenght2;j++){
+            for(int x=i*shrinkRatio;x<(i*shrinkRatio+shrinkRatio);x++){
+                for(int y=j*shrinkRatio;y<(j*shrinkRatio+shrinkRatio);y++){
+                    result[x][y]=nodes[nodeCounter]->cluster;
+                }
+            }
+            nodeCounter++;
+        }
+    }    
+    return result;
 }
 
 float NCut::getClusterRatio(float max, float min)

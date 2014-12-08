@@ -5,6 +5,7 @@
 #define SORT true
 #define THRESHOLD 0.0
 #define IDEAL_RATIO 0.06 // Toto cislo je prevzato primo z clanku od Malik, Shi.
+#define RESIZE 8
 
 class Node{
 public:
@@ -28,6 +29,8 @@ public:
 class NCut{
 private:
     int clusterCnt;
+    int originalLenght1;
+    int originalLenght2;
     int lenght1;
     int lenght2;
     Node ** nodes;//uzly
@@ -41,7 +44,9 @@ private:
      
     int countPosition(int x,int y);
     void countCoords(int &x, int &y, int position);
-
+    
+    float *** resizeInput(float *** img,int &lenght1,int &lenght2);
+    
     void SimplifyEquation();            // prevede do tvaru Ax=lambda x
     float weightFunction(int node1, int node2);
     void CreateAffinityMatrix();	// vytvori matici podobnosti
@@ -51,7 +56,7 @@ private:
     float getClusterRatio(float max, float min); //zjisti pomer, dle ktereho pozna, jestli jde uz o cely cluster nebo se bude dal delit
 	
 public:
-    NCut(float *** input,int lenght1, int lenght2, int lenght3, int clusterCnt); // vyplni inputMatrix ("splacne")
+    NCut(float *** input,int lenght1, int lenght2, int clusterCnt); // vyplni inputMatrix ("splacne")
     ~NCut();
     void Segmentation();			// vlastni segmentace
     int ** getResult();				// vrati vysledek

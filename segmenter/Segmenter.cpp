@@ -100,10 +100,7 @@ int Segmenter::clustering(DyXML_wrapper &par) {
   int nclust=2;
   par.get_val_req(nclust,"clusters","Enter number of clusters:");
   
-  if(nr>64){
-      // resize picture
-  }
-  NCut nCut(img,nr,nc,3,nclust);
+  NCut nCut(img,nr,nc,nclust);
 
   nCut.Segmentation();
   final =nCut.getResult();
