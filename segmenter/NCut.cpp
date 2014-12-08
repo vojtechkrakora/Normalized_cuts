@@ -1,5 +1,6 @@
 #include "NCut.h"
 #include "Maths.h"
+#include <map>
 #include <cmath>
 #include <cstring>
 #include <cstdio>
@@ -13,6 +14,12 @@ using Eigen::MatrixXd;
 
 bool AreSameFloats(float a, float b) {
     return std::fabs(a - b) < std::numeric_limits<float>::epsilon();
+}
+
+inline std::string toString(float x){
+  std::ostringstream o;
+  o<<x;
+  return o.str();
 }
 
 //nasobení matic... mozna optimalizace pro diagonalni matice
@@ -298,7 +305,30 @@ void NCut::Cut(){
     this->nextClusterID += 2;
            
 }
-
+                
+float k_nn(float***img,int shrinkRatio,int color ,int j, int k){                
+    float value=0;
+    int maxCount=0;
+    std::map<float, int> m;
+    std::map<float , int>::iterator it;
+    for(int x=shrinkRatio*j;x<(shrinkRatio*j+shrinkRatio);x++){
+        for(int y=shrinkRatio*k;y<(shrinkRatio*k+shrinkRatio);y++){
+            it=m.find(img[color][x][y]);
+            if(it!=m.end()){
+                it->second=it->second+1;
+            }else{
+                m[img[color][x][y]]=1;
+            }
+        }
+    }
+    for(it = m.begin(); it != m.end(); it++) {
+        if(it->second>maxCount){
+            maxCount=it->second;
+            value=it->first;
+        }
+    }
+    return value;
+}
 float *** NCut::resizeInput(float ***img,int &lenght1, int &lenght2){
     int resizeTo=RESIZE;
     
@@ -320,14 +350,7 @@ float *** NCut::resizeInput(float ***img,int &lenght1, int &lenght2){
     for(int i=0;i<3;i++){
         for(int j=0;j<lenght1;j++){
             for(int k=0;k<lenght2;k++){
-                float avg=0;
-                for(int x=shrinkRatio*j;x<(shrinkRatio*j+shrinkRatio);x++){
-                    for(int y=shrinkRatio*k;y<(shrinkRatio*k+shrinkRatio);y++){
-                     avg+=img[i][x][y];   
-                    }
-                }
-                avg/=(shrinkRatio*shrinkRatio);
-                input[i][j][k]=avg;
+                input[i][j][k]=k_nn(img,shrinkRatio,i,j,k);
             }
         }
     }
