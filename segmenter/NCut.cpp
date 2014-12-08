@@ -16,31 +16,6 @@ bool AreSameFloats(float a, float b) {
     return std::fabs(a - b) < std::numeric_limits<float>::epsilon();
 }
 
-inline std::string toString(float x){
-  std::ostringstream o;
-  o<<x;
-  return o.str();
-}
-
-//nasobení matic... mozna optimalizace pro diagonalni matice
-//predelano na indexovani od 1
-/*float ** MatrixMultiply(float ** matA, float ** matB, float** matC, int rowCnt, bool matBisDiagonal=false){
-    if(matC==0){
-        matC=new float*[rowCnt+1];
-        for(int i=1;i<=rowCnt;i++){
-            matC[i]=new float[rowCnt+1];
-        }
-    }
-    for(int i=1;i<=rowCnt;i++){
-        for(int j=1;j<=rowCnt;j++){
-            matC[i][j]=0;
-            for(int k=1;k<=rowCnt;k++){
-                matC[i][j]+=matA[i][k]*matB[k][j];
-            }
-        }
-    }
-    return matC;
-}*/
 
 void print_matrix(float ** matrix, int size)
 {
@@ -66,28 +41,11 @@ float RGBtoGrey(float r, float g, float b){
     return (r+g+b)/3.0;
 }
 
-//TODO Zkontrolovat
-//vypocet pozice na zaklade souradnic v realnem obrazku
-int NCut::countPosition(int x,int y){
-    int position=x*lenght1 + y;
-    return position+1; //indexovani od 1;
-}
-
-//TODO Zkontrolovat
-//vypocet souradnic v realnem obrazku z pozice v poli
-void NCut::countCoords(int &x, int &y, int position){
-    position-=1; //indexovani od 1;
-    x=position/lenght1;
-    y=position%lenght1;
-}
-
 //funkce vypoctu podobnosti 2 pixelu (rozdil barvy/vzdalenosti)
 float NCut::weightFunction(int node1, int node2){
     float sigma=2.0;
     Node* n1 = nodes[node1];
     Node* n2 = nodes[node2];
-    //n1->print();
-    //n2->print();
     float distance = sqrt((n1->x-n2->x)*(n1->x-n2->x)
         + (n1->y-n2->y)*(n1->y-n2->y));
     distance/=sigma;
@@ -95,8 +53,6 @@ float NCut::weightFunction(int node1, int node2){
     float affinity=fabs(n1->color-n2->color);
     affinity/=sigma;
     affinity=exp((-1)*affinity);
-    
-    //printf("Weight %f.\n",affinity*distance);
     return affinity*distance;
 }
 
@@ -110,8 +66,6 @@ void NCut::CreateAffinityMatrix(){
             affinityMatrix[i][j]=weightFunction(i,j);
 	}
     }
-    
-    //print_matrix(affinityMatrix,nodesCnt);
 }
 	
 // vytvori degree matici
@@ -138,7 +92,6 @@ void NCut::CreateDegreeMatrix(){
 // A = D^(-1/2)*(D-A)*D^(-1/2) 
 // ulozi do affinityMatrix
 // je pak možné počítat A*x = labda*x
-// predelano na indexovani od 1
 void NCut::SimplifyEquation(){
     //A=(D-A)
     for(int i=1;i<nodesCnt+1;i++){
@@ -160,10 +113,8 @@ void NCut::SimplifyEquation(){
     //A = multiply(multiply(D,A),D)
     //tmp = D*A
     MatrixMultipl(degreeMatrix, nodesCnt,nodesCnt,affinityMatrix, nodesCnt, nodesCnt, tmp);
-    //MatrixMultiply(degreeMatrix,affinityMatrix,tmp,nodesCnt); -- stara funkce pak smazat
     //A=tmp*D
     MatrixMultipl(tmp, nodesCnt,nodesCnt,degreeMatrix, nodesCnt, nodesCnt, affinityMatrix);
-    //MatrixMultiply(tmp,degreeMatrix, affinityMatrix,nodesCnt); -- stara funkce pak smazat
     for(int i=0;i<nodesCnt+1;i++){
         delete []tmp[i];
     }
@@ -199,14 +150,13 @@ void NCut::ComputeEigenVector(int eigvalOffset){
     //nacte eigenvalues
     for(int i=0;i<nodesCnt;i++){
         eigenvalues[i]=es.eigenvalues().real()(i);
-        printf("[%d], eigval = %f .\n",i,eigenvalues[i]);
     }
     //seradi je podle velikosti
     std::sort(eigenvalues, eigenvalues + nodesCnt, std::greater<float>());
     //druhe nejmensi
     eigenvalue=eigenvalues[nodesCnt-1];
     int eigenvalueIndex=-1;
-    //najde kde se nachazíi druhe nejmensi vlastni cislo
+    //najde kde se nachazii druhe nejmensi vlastni cislo
     for(int i = 0;i<nodesCnt;i++){
         if(AreSameFloats(es.eigenvalues().real()(i),eigenvalue)){
             eigenvalueIndex=i;
@@ -259,16 +209,6 @@ void NCut::Cut(){
                 cluster2_min = eigenvector[i];
         }
     }
-    
-    for(int i = 1; i < nodesCnt+1; i++)
-    {
-        if((i-1)%lenght1 == 0)
-        {
-            printf("\n");
-        }
-        printf("%f ",eigenvector[i]);
-    }
-    
     for(int i = 1; i < nodesCnt+1; i++)
     {
         if((i-1)%lenght1 == 0)
