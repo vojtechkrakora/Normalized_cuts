@@ -36,7 +36,7 @@ int gaussian_blur(float sigma, int d, int nr, int nc, int np, float ***in, float
     if (norm) for (i=0;i<np;i++) out[i][r][c]/=norm;
   }
 
-  vr_alloc(w0,-d,d); vr_free(w,-d,d,-d,d);
+  vr_free(w0,-d,d); vr_free(w,-d,d,-d,d);
 
   return 0;
 }
