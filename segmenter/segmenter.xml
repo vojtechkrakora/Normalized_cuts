@@ -1,28 +1,40 @@
 <!--  segmenter parameters -->
 <main>
   <var name="nrun"        rem="number of runs"> 1 </var>
-  <var name="from"        rem="run from"> 0 </var>
+  <var name="from"        rem="run from"> 1 </var>
   <var name="prefix"      rem="section prefix"> run </var>
-  <section name="run_!0">
+  <section name="run_!1">
     <var name="nr"          rem="size of the input image (rows)"> 512 </var>
     <var name="nc"          rem="size of the input image (columns)"> 512 </var>
     <var name="ImgFile"     rem="input image filename"> "data/tm1_1_1" </var>
     <var name="ImgType"     rem="input image type"> 301 </var>
     <var name="planes"      rem="number of input image planes"> 3 </var>
+    <var name="kl_trans"    rem="feature vector size after KL trans. (0=no trans; <0 reduce the size)"> 0 </var>
     <var name="clusters"    rem="number of clusters"> 3 </var>
-    <var name="iterations"  rem="maximum number of iterations"> 4 </var>
-    <var name="neigh"       rem="neighbourhood weight (0 .. w/o neighbourhood)"> 64 </var>
-    <var name="norm"        rem="normalize values? (0/1)"> 1 </var>
+    <var name="iterations"  rem="maximum number of iterations"> 500 </var>
+    <var name="neigh"       rem="neighbourhood weight (0 .. w/o neighbourhood)"> 0 </var>
+    <var name="norm"        rem="normalize values? (0/1)"> 0 </var>
     <var name="OutFile"     rem="output image filename"> "results/seg0_1_1" </var>
     <var name="OutType"     rem="output image type"> 302 </var>
     <var name="FeatFile"    rem="features filename"> "results/feat0_1_1" </var>
-    <var name="FeatType"    rem="features type"> 302 </var>
+    <!--var name="FeatType"    rem="features type"> 302 </var-->
+    <var name="KLFile"      rem="reduced features filename"> "results/kl0_1_1" </var>
+    <!--var name="KLType"      rem="reduced features type"> 318 </var-->
+    <var name="IwBFile"     rem="image with borders filename"> "results/emb0_1_1" </var>
+    <var name="EdgeFile"    rem="image borders filename"> "results/edge0_1_1" </var>
+    <var name="level"       rem="image borders level [-1..+1]"> 0.25 </var>
     <section name="features">
       <var name="sigma"       rem="sigma"> 5 </var>
       <var name="win"         rem="window size"> 9 </var>
-      <var name="rgb2lab"     rem="convert from RGB into Lab? (0/1)"> 1 </var>
+      <var name="rgb2lab"     rem="convert from RGB into Lab? (0/1)"> 0 </var>
+    </section>
+    <section name="thematic">
+      <var name="sigma"       rem="sigma"> 8 </var>
+      <var name="win"         rem="window size"> 12 </var>
     </section>
     <section name="postprocessing">
+      <var name="min_area"    rem="minimum region area"> 0.01 </var>
+      <var name="single"      rem="distinct regions? (0/1)"> 0 </var>
     </section>
   </section>
 </main>

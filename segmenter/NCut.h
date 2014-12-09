@@ -5,7 +5,7 @@
 #define SORT true
 #define THRESHOLD 0.0
 #define IDEAL_RATIO 0.06 // Toto cislo je prevzato primo z clanku od Malik, Shi.
-#define RESIZE 8
+#define RESIZE 16
 
 class Node{
 public:
@@ -60,5 +60,6 @@ public:
     ~NCut();
     void Segmentation();			// vlastni segmentace
     int ** getResult();				// vrati vysledek
+    void SetProbs(float *** probs);
 };
 #endif

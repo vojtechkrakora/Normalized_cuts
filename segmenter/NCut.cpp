@@ -306,7 +306,7 @@ NCut::NCut(float *** img,int lenght1, int lenght2, int clustersCnt){
     nodesCnt=0;
     for(int i=0;i<lenght1;i++){
     	for(int j = 0;j<lenght2;j++){
-        	float color=RGBtoGrey(input[0][i][j],input[1][i][j],input[2][i][j]);
+        	float color=RGBtoGreyLuminosity(input[0][i][j],input[1][i][j],input[2][i][j]);
                 nodes[nodesCnt+1]= new Node(i+1,j+1,color);
                 nodesCnt++;
                 printf("%02.1f ",color);
@@ -411,4 +411,19 @@ float NCut::getClusterRatio(float max, float min)
     }
     
     return (min/max);
+}
+
+void NCut::SetProbs(float*** probs){
+    int shrinkRatio=originalLenght1/lenght1;
+    for(int i=1;i<nodesCnt+1;i++){
+        int x=nodes[i]->x-1;
+        int y=nodes[i]->y-1;
+        int clust = nodes[i]->cluster%clusterCnt;
+        for(int k=x*shrinkRatio;k<(x*shrinkRatio+shrinkRatio);k++){
+            for(int j=y*shrinkRatio;j<(y*shrinkRatio+shrinkRatio);j++){
+               probs[clust][k][j]=1; 
+               //printf("clust(%d),k(%d),j(%d)",clust,k,j);
+            }
+        }
+    }
 }
