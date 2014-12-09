@@ -222,27 +222,32 @@ void NCut::Cut(){
     ratio1 = getClusterRatio(cluster1_max, cluster1_min);
     ratio2 = getClusterRatio(cluster2_max, cluster2_min);
     
-    //uzly v pevnych clusterech nalezite oznacime
-    if(ratio1 > IDEAL_RATIO)
+    //cluster, ktery ma vetsi ratio je napevno ustalen
+    if(ratio1 > ratio2)
     {
         for(int i = 1; i < nodesCnt+1; i++)
         {
             if(nodes[i]->cluster == nextClusterID)
                 nodes[i]->isInCluster = true;
         }
-    }
-    
-    if(ratio2 > IDEAL_RATIO)
+    } else
     {
         for(int i = 1; i < nodesCnt+1; i++)
         {
             if(nodes[i]->cluster == nextClusterID+1)
+            {   
+                /* Aby cisla clusteru sla po sobe, je treba v tomto pripade, 
+                 * ze obstoji druhy cluster jeho cislo zmensit na ukor
+                 * prohravajiciho.
+                 */
+                nodes[i]->cluster = nextClusterID;
                 nodes[i]->isInCluster = true;
+            }
         }
     }
     
-    // preskakuje oba predchozi clustery, aby nevznikla kolize
-    this->nextClusterID += 2;
+    // nastaveni cisla dalsiho clusteru
+    this->nextClusterID++;
            
 }
                 
