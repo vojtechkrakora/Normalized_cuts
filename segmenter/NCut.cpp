@@ -209,15 +209,7 @@ void NCut::Cut(){
                 cluster2_min = eigenvector[i];
         }
     }
-    for(int i = 1; i < nodesCnt+1; i++)
-    {
-        if((i-1)%lenght1 == 0)
-        {
-            printf("\n");
-        }
-        printf("%d ",nodes[i]->cluster);
-    }
-    
+     
     // vypocita pomery obou clusteru
     ratio1 = getClusterRatio(cluster1_max, cluster1_min);
     ratio2 = getClusterRatio(cluster2_max, cluster2_min);
@@ -242,10 +234,25 @@ void NCut::Cut(){
                  */
                 nodes[i]->cluster = nextClusterID;
                 nodes[i]->isInCluster = true;
+            }else
+            {
+                /* Ostatni nody, ktery nejsou v clusteru predpokladaji, ze 
+                 * budou cluster nasledujici.
+                 */
+                if(nodes[i]->isInCluster == false)
+                    nodes[i]->cluster = nextClusterID+1;
             }
         }
     }
     
+    for(int i = 1; i < nodesCnt+1; i++)
+    {
+        if((i-1)%lenght1 == 0)
+        {
+            printf("\n");
+        }
+        printf("%d ",nodes[i]->cluster);
+    }
     // nastaveni cisla dalsiho clusteru
     this->nextClusterID++;
            
