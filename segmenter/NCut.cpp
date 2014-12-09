@@ -34,7 +34,7 @@ void print_matrix(float ** matrix, int size)
 }
 
 float RGBtoGreyLuminosity(float r, float g, float b){
-    return ((0.21*r)+(0.72*g)+(0.07*b));
+    return ((0.21*r)+(0.72*g)+(0.07*b))/3;
 }
 
 float RGBtoGrey(float r, float g, float b){
