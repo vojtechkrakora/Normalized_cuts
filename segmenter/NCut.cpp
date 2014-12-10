@@ -16,6 +16,29 @@ bool AreSameFloats(float a, float b) {
     return std::fabs(a - b) < std::numeric_limits<float>::epsilon();
 }
 
+/* Vypocte median, s input pracuje jako input[1..size]*/
+float get_median(const float * input, const int size)
+{
+    float * sorted = new float[size+1];
+    sorted[0] = 0.0;
+    float result;
+    
+    for(int i = 1; i < size +1; i ++)
+    {
+        sorted[i] = input[i];
+    }
+
+    std::sort(sorted, sorted + size, std::greater<float>());
+    
+    result = sorted[size/2];
+    
+    /* Nula je spatne cislo na vypocet ratia, proto hranici posuneme. */
+    if(AreSameFloats(result,0.0)){
+        return 1.0;
+    }
+    delete [] sorted;
+    return result;
+}
 
 void print_matrix(float ** matrix, int size)
 {
@@ -180,11 +203,12 @@ void NCut::Cut(){
             cluster1_min = INT_MAX, cluster2_min = INT_MAX;
     float ratio1, ratio2;
     
-    for(int i = 1; i < nodesCnt+1; i++)
-    {
-        threshold += eigenvector[i];
-    }
-    threshold /= nodesCnt;
+//    for(int i = 1; i < nodesCnt+1; i++)
+//    {
+//        threshold += eigenvector[i];
+//    }
+//    threshold /= nodesCnt;
+    threshold = get_median(eigenvector,nodesCnt);
     
     printf("Threshold is %f .\n",threshold);
     for(int i = 1; i < nodesCnt+1; i++)
@@ -400,7 +424,7 @@ float NCut::getClusterRatio(float max, float min)
     {
         printf("Error. Probably are swaped input variables max(=%f) and"
                 " min(=%f).\n",max,min);
-        exit(0);
+        return 1;
     }
     
     // pripad opacnych znamenek by nemel byt v jednom clusteru
