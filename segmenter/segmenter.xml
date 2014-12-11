@@ -1,16 +1,16 @@
 <!--  segmenter parameters -->
 <main>
-  <var name="nrun"        rem="number of runs"> 1 </var>
+  <var name="nrun"        rem="number of runs"> 80 </var>
   <var name="from"        rem="run from"> 1 </var>
   <var name="prefix"      rem="section prefix"> run </var>
-  <section name="run_!1">
+  <section name="run_!0">
     <var name="nr"          rem="size of the input image (rows)"> 512 </var>
     <var name="nc"          rem="size of the input image (columns)"> 512 </var>
     <var name="ImgFile"     rem="input image filename"> "data/tm1_1_1" </var>
     <var name="ImgType"     rem="input image type"> 301 </var>
     <var name="planes"      rem="number of input image planes"> 3 </var>
     <var name="kl_trans"    rem="feature vector size after KL trans. (0=no trans; <0 reduce the size)"> 0 </var>
-    <var name="clusters"    rem="number of clusters"> 3 </var>
+    <var name="clusters"    rem="number of clusters"> 5 </var>
     <var name="iterations"  rem="maximum number of iterations"> 500 </var>
     <var name="neigh"       rem="neighbourhood weight (0 .. w/o neighbourhood)"> 0 </var>
     <var name="norm"        rem="normalize values? (0/1)"> 0 </var>
@@ -37,4 +37,254 @@
       <var name="single"      rem="distinct regions? (0/1)"> 0 </var>
     </section>
   </section>
+
+<section name="run_!1"><include>"run_!0"</include><var name="ImgFile"> "data/tm1_1_1" </var><var name="clusters"> 5 </var><var name="OutFile"> "results/seg1_1_1" </var><var name="FeatFile"> "results/feat1_1_1" </var><var name="KLFile"> "results/kl1_1_1" </var><var name="IwBFile"> "results/emb1_1_1" </var><var name="EdgeFile"> "results/edge1_1_1" </var></section>
+
+  <section name="run_!2"><include>"run_!0"</include><var name="ImgFile"> "data/tm1_1_2" </var><var name="clusters"> 6 </var><var name="OutFile"> "results/seg1_1_2" </var><var name="FeatFile"> "results/feat1_1_2" </var><var name="KLFile"> "results/kl1_1_2" </var><var name="IwBFile"> "results/emb1_1_2" </var><var name="EdgeFile"> "results/edge1_1_2" </var></section>
+
+  <section name="run_!3"><include>"run_!0"</include><var name="ImgFile"> "data/tm1_2_1" </var><var name="clusters"> 7 </var><var name="OutFile"> "results/seg1_2_1" </var><var name="FeatFile"> "results/feat1_2_1" </var><var name="KLFile"> "results/kl1_2_1" </var><var name="IwBFile"> "results/emb1_2_1" </var><var name="EdgeFile"> "results/edge1_2_1" </var></section>
+
+  <section name="run_!4"><include>"run_!0"</include><var name="ImgFile"> "data/tm1_2_2" </var><var name="clusters"> 8 </var><var name="OutFile"> "results/seg1_2_2" </var><var name="FeatFile"> "results/feat1_2_2" </var><var name="KLFile"> "results/kl1_2_2" </var><var name="IwBFile"> "results/emb1_2_2" </var><var name="EdgeFile"> "results/edge1_2_2" </var></section>
+
+ <section name="run_!5"><include>"run_!0"</include><var name="ImgFile"> "data/tm2_1_1" </var><var name="clusters"> 5 </var><var name="OutFile"> "results/seg2_1_1" </var><var name="FeatFile"> "results/feat2_1_1" </var><var name="KLFile"> "results/kl2_1_1" </var><var name="IwBFile"> "results/emb2_1_1" </var><var name="EdgeFile"> "results/edge2_1_1" </var></section>
+
+  <section name="run_!6"><include>"run_!0"</include><var name="ImgFile"> "data/tm2_1_2" </var><var name="clusters"> 6 </var><var name="OutFile"> "results/seg2_1_2" </var><var name="FeatFile"> "results/feat2_1_2" </var><var name="KLFile"> "results/kl2_1_2" </var><var name="IwBFile"> "results/emb2_1_2" </var><var name="EdgeFile"> "results/edge2_1_2" </var></section>
+
+  <section name="run_!7"><include>"run_!0"</include><var name="ImgFile"> "data/tm2_2_1" </var><var name="clusters"> 7 </var><var name="OutFile"> "results/seg2_2_1" </var><var name="FeatFile"> "results/feat2_2_1" </var><var name="KLFile"> "results/kl2_2_1" </var><var name="IwBFile"> "results/emb2_2_1" </var><var name="EdgeFile"> "results/edge2_2_1" </var></section>
+
+  <section name="run_!8"><include>"run_!0"</include><var name="ImgFile"> "data/tm2_2_2" </var><var name="clusters"> 8 </var><var name="OutFile"> "results/seg2_2_2" </var><var name="FeatFile"> "results/feat2_2_2" </var><var name="KLFile"> "results/kl2_2_2" </var><var name="IwBFile"> "results/emb2_2_2" </var><var name="EdgeFile"> "results/edge2_2_2" </var></section>
+
+<section name="run_!9"><include>"run_!0"</include><var name="ImgFile"> "data/tm3_1_1" </var><var name="clusters"> 5 </var><var name="OutFile"> "results/seg3_1_1" </var><var name="FeatFile"> "results/feat3_1_1" </var><var name="KLFile"> "results/kl3_1_1" </var><var name="IwBFile"> "results/emb3_1_1" </var><var name="EdgeFile"> "results/edge3_1_1" </var></section>
+
+  <section name="run_!10"><include>"run_!0"</include><var name="ImgFile"> "data/tm3_1_2" </var><var name="clusters"> 6 </var><var name="OutFile"> "results/seg3_1_2" </var><var name="FeatFile"> "results/feat3_1_2" </var><var name="KLFile"> "results/kl3_1_2" </var><var name="IwBFile"> "results/emb3_1_2" </var><var name="EdgeFile"> "results/edge3_1_2" </var></section>
+
+  <section name="run_!11"><include>"run_!0"</include><var name="ImgFile"> "data/tm3_2_1" </var><var name="clusters"> 7 </var><var name="OutFile"> "results/seg3_2_1" </var><var name="FeatFile"> "results/feat3_2_1" </var><var name="KLFile"> "results/kl3_2_1" </var><var name="IwBFile"> "results/emb3_2_1" </var><var name="EdgeFile"> "results/edge3_2_1" </var></section>
+
+  <section name="run_!12"><include>"run_!0"</include><var name="ImgFile"> "data/tm3_2_2" </var><var name="clusters"> 8 </var><var name="OutFile"> "results/seg3_2_2" </var><var name="FeatFile"> "results/feat3_2_2" </var><var name="KLFile"> "results/kl3_2_2" </var><var name="IwBFile"> "results/emb3_2_2" </var><var name="EdgeFile"> "results/edge3_2_2" </var></section>
+
+
+<section name="run_!13"><include>"run_!0"</include><var name="ImgFile"> "data/tm4_1_1" </var><var name="clusters"> 5 </var><var name="OutFile"> "results/seg4_1_1" </var><var name="FeatFile"> "results/feat4_1_1" </var><var name="KLFile"> "results/kl4_1_1" </var><var name="IwBFile"> "results/emb4_1_1" </var><var name="EdgeFile"> "results/edge4_1_1" </var></section>
+
+  <section name="run_!14"><include>"run_!0"</include><var name="ImgFile"> "data/tm4_1_2" </var><var name="clusters"> 6 </var><var name="OutFile"> "results/seg4_1_2" </var><var name="FeatFile"> "results/feat4_1_2" </var><var name="KLFile"> "results/kl4_1_2" </var><var name="IwBFile"> "results/emb4_1_2" </var><var name="EdgeFile"> "results/edge4_1_2" </var></section>
+
+  <section name="run_!15"><include>"run_!0"</include><var name="ImgFile"> "data/tm4_2_1" </var><var name="clusters"> 7 </var><var name="OutFile"> "results/seg4_2_1" </var><var name="FeatFile"> "results/feat4_2_1" </var><var name="KLFile"> "results/kl4_2_1" </var><var name="IwBFile"> "results/emb4_2_1" </var><var name="EdgeFile"> "results/edge4_2_1" </var></section>
+
+  <section name="run_!16"><include>"run_!0"</include><var name="ImgFile"> "data/tm4_2_2" </var><var name="clusters"> 8 </var><var name="OutFile"> "results/seg4_2_2" </var><var name="FeatFile"> "results/feat4_2_2" </var><var name="KLFile"> "results/kl4_2_2" </var><var name="IwBFile"> "results/emb4_2_2" </var><var name="EdgeFile"> "results/edge4_2_2" </var></section>
+
+<section name="run_!17"><include>"run_!0"</include><var name="ImgFile"> "data/tm5_1_1" </var><var name="clusters"> 5 </var><var name="OutFile"> "results/seg5_1_1" </var><var name="FeatFile"> "results/feat5_1_1" </var><var name="KLFile"> "results/kl5_1_1" </var><var name="IwBFile"> "results/emb5_1_1" </var><var name="EdgeFile"> "results/edge5_1_1" </var></section>
+
+  <section name="run_!18"><include>"run_!0"</include><var name="ImgFile"> "data/tm5_1_2" </var><var name="clusters"> 6 </var><var name="OutFile"> "results/seg5_1_2" </var><var name="FeatFile"> "results/feat5_1_2" </var><var name="KLFile"> "results/kl5_1_2" </var><var name="IwBFile"> "results/emb5_1_2" </var><var name="EdgeFile"> "results/edge5_1_2" </var></section>
+
+  <section name="run_!19"><include>"run_!0"</include><var name="ImgFile"> "data/tm5_2_1" </var><var name="clusters"> 7 </var><var name="OutFile"> "results/seg5_2_1" </var><var name="FeatFile"> "results/feat5_2_1" </var><var name="KLFile"> "results/kl5_2_1" </var><var name="IwBFile"> "results/emb5_2_1" </var><var name="EdgeFile"> "results/edge5_2_1" </var></section>
+
+  <section name="run_!20"><include>"run_!0"</include><var name="ImgFile"> "data/tm5_2_2" </var><var name="clusters"> 8 </var><var name="OutFile"> "results/seg5_2_2" </var><var name="FeatFile"> "results/feat5_2_2" </var><var name="KLFile"> "results/k5_2_2" </var><var name="IwBFile"> "results/emb5_2_2" </var><var name="EdgeFile"> "results/edge5_2_2" </var></section>
+
+
+<section name="run_!21"><include>"run_!0"</include><var name="ImgFile"> "data/tm6_1_1" </var><var name="clusters"> 5 </var><var name="OutFile"> "results/seg6_1_1" </var><var name="FeatFile"> "results/feat6_1_1" </var><var name="KLFile"> "results/kl6_1_1" </var><var name="IwBFile"> "results/emb6_1_1" </var><var name="EdgeFile"> "results/edge6_1_1" </var></section>
+
+  <section name="run_!22"><include>"run_!0"</include><var name="ImgFile"> "data/tm6_1_2" </var><var name="clusters"> 6 </var><var name="OutFile"> "results/seg6_1_2" </var><var name="FeatFile"> "results/feat6_1_2" </var><var name="KLFile"> "results/kl6_1_2" </var><var name="IwBFile"> "results/emb5_1_2" </var><var name="EdgeFile"> "results/edge6_1_2" </var></section>
+
+  <section name="run_!23"><include>"run_!0"</include><var name="ImgFile"> "data/tm6_2_1" </var><var name="clusters"> 7 </var><var name="OutFile"> "results/seg6_2_1" </var><var name="FeatFile"> "results/feat6_2_1" </var><var name="KLFile"> "results/kl6_2_1" </var><var name="IwBFile"> "results/emb6_2_1" </var><var name="EdgeFile"> "results/edge6_2_1" </var></section>
+
+  <section name="run_!24"><include>"run_!0"</include><var name="ImgFile"> "data/tm6_2_2" </var><var name="clusters"> 8 </var><var name="OutFile"> "results/seg6_2_2" </var><var name="FeatFile"> "results/feat6_2_2" </var><var name="KLFile"> "results/k6_2_2" </var><var name="IwBFile"> "results/emb6_2_2" </var><var name="EdgeFile"> "results/edge6_2_2" </var></section>
+
+
+<section name="run_!25"><include>"run_!0"</include><var name="ImgFile"> "data/tm7_1_1" </var><var name="clusters"> 5 </var><var name="OutFile"> "results/seg7_1_1" </var><var name="FeatFile"> "results/feat7_1_1" </var><var name="KLFile"> "results/kl7_1_1" </var><var name="IwBFile"> "results/emb7_1_1" </var><var name="EdgeFile"> "results/edge7_1_1" </var></section>
+
+  <section name="run_!26"><include>"run_!0"</include><var name="ImgFile"> "data/tm7_1_2" </var><var name="clusters"> 6 </var><var name="OutFile"> "results/seg7_1_2" </var><var name="FeatFile"> "results/feat7_1_2" </var><var name="KLFile"> "results/kl7_1_2" </var><var name="IwBFile"> "results/emb7_1_2" </var><var name="EdgeFile"> "results/edge7_1_2" </var></section>
+
+  <section name="run_!27"><include>"run_!0"</include><var name="ImgFile"> "data/tm7_2_1" </var><var name="clusters"> 7 </var><var name="OutFile"> "results/seg7_2_1" </var><var name="FeatFile"> "results/feat7_2_1" </var><var name="KLFile"> "results/kl7_2_1" </var><var name="IwBFile"> "results/emb7_2_1" </var><var name="EdgeFile"> "results/edge7_2_1" </var></section>
+
+  <section name="run_!28"><include>"run_!0"</include><var name="ImgFile"> "data/tm7_2_2" </var><var name="clusters"> 8 </var><var name="OutFile"> "results/seg7_2_2" </var><var name="FeatFile"> "results/feat7_2_2" </var><var name="KLFile"> "results/k7_2_2" </var><var name="IwBFile"> "results/emb7_2_2" </var><var name="EdgeFile"> "results/edge7_2_2" </var></section>
+
+
+
+
+
+<section name="run_!29"><include>"run_!0"</include><var name="ImgFile"> "data/tm8_1_1" </var><var name="clusters"> 5 </var><var name="OutFile"> "results/seg8_1_1" </var><var name="FeatFile"> "results/feat8_1_1" </var><var name="KLFile"> "results/kl8_1_1" </var><var name="IwBFile"> "results/emb8_1_1" </var><var name="EdgeFile"> "results/edge8_1_1" </var></section>
+
+  <section name="run_!30"><include>"run_!0"</include><var name="ImgFile"> "data/tm8_1_2" </var><var name="clusters"> 6 </var><var name="OutFile"> "results/seg8_1_2" </var><var name="FeatFile"> "results/feat8_1_2" </var><var name="KLFile"> "results/kl8_1_2" </var><var name="IwBFile"> "results/emb8_1_2" </var><var name="EdgeFile"> "results/edge8_1_2" </var></section>
+
+  <section name="run_!31"><include>"run_!0"</include><var name="ImgFile"> "data/tm8_2_1" </var><var name="clusters"> 7 </var><var name="OutFile"> "results/seg8_2_1" </var><var name="FeatFile"> "results/feat8_2_1" </var><var name="KLFile"> "results/kl8_2_1" </var><var name="IwBFile"> "results/emb8_2_1" </var><var name="EdgeFile"> "results/edge8_2_1" </var></section>
+
+  <section name="run_!32"><include>"run_!0"</include><var name="ImgFile"> "data/tm8_2_2" </var><var name="clusters"> 8 </var><var name="OutFile"> "results/seg8_2_2" </var><var name="FeatFile"> "results/feat8_2_2" </var><var name="KLFile"> "results/k8_2_2" </var><var name="IwBFile"> "results/emb8_2_2" </var><var name="EdgeFile"> "results/edge8_2_2" </var></section>
+
+<section name="run_!33"><include>"run_!0"</include><var name="ImgFile"> "data/tm9_1_1" </var><var name="clusters"> 5 </var><var name="OutFile"> "results/seg9_1_1" </var><var name="FeatFile"> "results/feat9_1_1" </var><var name="KLFile"> "results/kl9_1_1" </var><var name="IwBFile"> "results/emb9_1_1" </var><var name="EdgeFile"> "results/edge9_1_1" </var></section>
+
+  <section name="run_!34"><include>"run_!0"</include><var name="ImgFile"> "data/tm9_1_2" </var><var name="clusters"> 6 </var><var name="OutFile"> "results/seg9_1_2" </var><var name="FeatFile"> "results/feat9_1_2" </var><var name="KLFile"> "results/kl9_1_2" </var><var name="IwBFile"> "results/emb9_1_2" </var><var name="EdgeFile"> "results/edge9_1_2" </var></section>
+
+  <section name="run_!35"><include>"run_!0"</include><var name="ImgFile"> "data/tm9_2_1" </var><var name="clusters"> 7 </var><var name="OutFile"> "results/seg9_2_1" </var><var name="FeatFile"> "results/feat9_2_1" </var><var name="KLFile"> "results/kl9_2_1" </var><var name="IwBFile"> "results/emb9_2_1" </var><var name="EdgeFile"> "results/edge9_2_1" </var></section>
+
+  <section name="run_!36"><include>"run_!0"</include><var name="ImgFile"> "data/tm9_2_2" </var><var name="clusters"> 8 </var><var name="OutFile"> "results/seg9_2_2" </var><var name="FeatFile"> "results/feat9_2_2" </var><var name="KLFile"> "results/k9_2_2" </var><var name="IwBFile"> "results/emb9_2_2" </var><var name="EdgeFile"> "results/edge9_2_2" </var></section>
+
+<section name="run_!37"><include>"run_!0"</include><var name="ImgFile"> "data/tm10_1_1" </var><var name="clusters"> 5 </var><var name="OutFile"> "results/seg9_1_1" </var><var name="FeatFile"> "results/feat10_1_1" </var><var name="KLFile"> "results/kl10_1_1" </var><var name="IwBFile"> "results/emb10_1_1" </var><var name="EdgeFile"> "results/edge10_1_1" </var></section>
+
+  <section name="run_!38"><include>"run_!0"</include><var name="ImgFile"> "data/tm10_1_2" </var><var name="clusters"> 6 </var><var name="OutFile"> "results/seg10_1_2" </var><var name="FeatFile"> "results/feat10_1_2" </var><var name="KLFile"> "results/kl10_1_2" </var><var name="IwBFile"> "results/emb10_1_2" </var><var name="EdgeFile"> "results/edge10_1_2" </var></section>
+
+  <section name="run_!39"><include>"run_!0"</include><var name="ImgFile"> "data/tm10_2_1" </var><var name="clusters"> 7 </var><var name="OutFile"> "results/seg10_2_1" </var><var name="FeatFile"> "results/feat10_2_1" </var><var name="KLFile"> "results/kl10_2_1" </var><var name="IwBFile"> "results/emb10_2_1" </var><var name="EdgeFile"> "results/edge10_2_1" </var></section>
+
+  <section name="run_!40"><include>"run_!0"</include><var name="ImgFile"> "data/tm10_2_2" </var><var name="clusters"> 8 </var><var name="OutFile"> "results/seg10_2_2" </var><var name="FeatFile"> "results/feat10_2_2" </var><var name="KLFile"> "results/k10_2_2" </var><var name="IwBFile"> "results/emb10_2_2" </var><var name="EdgeFile"> "results/edge10_2_2" </var></section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section name="run_!41"><include>"run_!0"</include><var name="ImgFile"> "data/tm11_1_1" </var><var name="clusters"> 5 </var><var name="OutFile"> "results/seg11_1_1" </var><var name="FeatFile"> "results/feat11_1_1" </var><var name="KLFile"> "results/kl11_1_1" </var><var name="IwBFile"> "results/emb11_1_1" </var><var name="EdgeFile"> "results/edge11_1_1" </var></section>
+
+  <section name="run_!42"><include>"run_!0"</include><var name="ImgFile"> "data/tm11_1_2" </var><var name="clusters"> 6 </var><var name="OutFile"> "results/seg11_1_2" </var><var name="FeatFile"> "results/feat11_1_2" </var><var name="KLFile"> "results/kl11_1_2" </var><var name="IwBFile"> "results/emb11_1_2" </var><var name="EdgeFile"> "results/edge11_1_2" </var></section>
+
+  <section name="run_!43"><include>"run_!0"</include><var name="ImgFile"> "data/tm11_2_1" </var><var name="clusters"> 7 </var><var name="OutFile"> "results/seg11_2_1" </var><var name="FeatFile"> "results/feat11_2_1" </var><var name="KLFile"> "results/kl11_2_1" </var><var name="IwBFile"> "results/emb11_2_1" </var><var name="EdgeFile"> "results/edge11_2_1" </var></section>
+
+  <section name="run_!44"><include>"run_!0"</include><var name="ImgFile"> "data/tm11_2_2" </var><var name="clusters"> 8 </var><var name="OutFile"> "results/seg11_2_2" </var><var name="FeatFile"> "results/feat11_2_2" </var><var name="KLFile"> "results/kl11_2_2" </var><var name="IwBFile"> "results/emb11_2_2" </var><var name="EdgeFile"> "results/edge11_2_2" </var></section>
+
+
+
+
+
+
+
+
+
+
+<section name="run_!45"><include>"run_!0"</include><var name="ImgFile"> "data/tm12_1_1" </var><var name="clusters"> 5 </var><var name="OutFile"> "results/seg12_1_1" </var><var name="FeatFile"> "results/feat12_1_1" </var><var name="KLFile"> "results/kl12_1_1" </var><var name="IwBFile"> "results/emb12_1_1" </var><var name="EdgeFile"> "results/edge12_1_1" </var></section>
+
+  <section name="run_!46"><include>"run_!0"</include><var name="ImgFile"> "data/tm12_1_2" </var><var name="clusters"> 6 </var><var name="OutFile"> "results/seg12_1_2" </var><var name="FeatFile"> "results/feat12_1_2" </var><var name="KLFile"> "results/kl12_1_2" </var><var name="IwBFile"> "results/emb12_1_2" </var><var name="EdgeFile"> "results/edge12_1_2" </var></section>
+
+  <section name="run_!47"><include>"run_!0"</include><var name="ImgFile"> "data/tm12_2_1" </var><var name="clusters"> 7 </var><var name="OutFile"> "results/seg12_2_1" </var><var name="FeatFile"> "results/feat12_2_1" </var><var name="KLFile"> "results/kl12_2_1" </var><var name="IwBFile"> "results/emb12_2_1" </var><var name="EdgeFile"> "results/edge12_2_1" </var></section>
+
+  <section name="run_!48"><include>"run_!0"</include><var name="ImgFile"> "data/tm12_2_2" </var><var name="clusters"> 8 </var><var name="OutFile"> "results/seg12_2_2" </var><var name="FeatFile"> "results/feat12_2_2" </var><var name="KLFile"> "results/kl12_2_2" </var><var name="IwBFile"> "results/emb12_2_2" </var><var name="EdgeFile"> "results/edge12_2_2" </var></section>
+
+
+
+
+
+
+
+
+
+
+
+<section name="run_!49"><include>"run_!0"</include><var name="ImgFile"> "data/tm13_1_1" </var><var name="clusters"> 5 </var><var name="OutFile"> "results/seg13_1_1" </var><var name="FeatFile"> "results/feat13_1_1" </var><var name="KLFile"> "results/kl13_1_1" </var><var name="IwBFile"> "results/emb13_1_1" </var><var name="EdgeFile"> "results/edge13_1_1" </var></section>
+
+  <section name="run_!50"><include>"run_!0"</include><var name="ImgFile"> "data/tm13_1_2" </var><var name="clusters"> 6 </var><var name="OutFile"> "results/seg13_1_2" </var><var name="FeatFile"> "results/feat13_1_2" </var><var name="KLFile"> "results/kl13_1_2" </var><var name="IwBFile"> "results/emb13_1_2" </var><var name="EdgeFile"> "results/edge13_1_2" </var></section>
+
+  <section name="run_!51"><include>"run_!0"</include><var name="ImgFile"> "data/tm13_2_1" </var><var name="clusters"> 7 </var><var name="OutFile"> "results/seg13_2_1" </var><var name="FeatFile"> "results/feat13_2_1" </var><var name="KLFile"> "results/kl13_2_1" </var><var name="IwBFile"> "results/emb13_2_1" </var><var name="EdgeFile"> "results/edge13_2_1" </var></section>
+
+  <section name="run_!52"><include>"run_!0"</include><var name="ImgFile"> "data/tm13_2_2" </var><var name="clusters"> 8 </var><var name="OutFile"> "results/seg13_2_2" </var><var name="FeatFile"> "results/feat13_2_2" </var><var name="KLFile"> "results/kl13_2_2" </var><var name="IwBFile"> "results/emb13_2_2" </var><var name="EdgeFile"> "results/edge13_2_2" </var></section>
+
+
+
+
+
+
+
+
+<section name="run_!53"><include>"run_!0"</include><var name="ImgFile"> "data/tm14_1_1" </var><var name="clusters"> 5 </var><var name="OutFile"> "results/seg14_1_1" </var><var name="FeatFile"> "results/feat14_1_1" </var><var name="KLFile"> "results/kl14_1_1" </var><var name="IwBFile"> "results/emb14_1_1" </var><var name="EdgeFile"> "results/edge14_1_1" </var></section>
+
+  <section name="run_!54"><include>"run_!0"</include><var name="ImgFile"> "data/tm14_1_2" </var><var name="clusters"> 6 </var><var name="OutFile"> "results/seg14_1_2" </var><var name="FeatFile"> "results/feat14_1_2" </var><var name="KLFile"> "results/kl14_1_2" </var><var name="IwBFile"> "results/emb14_1_2" </var><var name="EdgeFile"> "results/edge14_1_2" </var></section>
+
+  <section name="run_!55"><include>"run_!0"</include><var name="ImgFile"> "data/tm14_2_1" </var><var name="clusters"> 7 </var><var name="OutFile"> "results/seg14_2_1" </var><var name="FeatFile"> "results/feat14_2_1" </var><var name="KLFile"> "results/kl14_2_1" </var><var name="IwBFile"> "results/emb14_2_1" </var><var name="EdgeFile"> "results/edge14_2_1" </var></section>
+
+  <section name="run_!56"><include>"run_!0"</include><var name="ImgFile"> "data/tm14_2_2" </var><var name="clusters"> 8 </var><var name="OutFile"> "results/seg14_2_2" </var><var name="FeatFile"> "results/feat14_2_2" </var><var name="KLFile"> "results/kl1_2_2" </var><var name="IwBFile"> "results/emb14_2_2" </var><var name="EdgeFile"> "results/edge14_2_2" </var></section>
+
+
+
+
+
+<section name="run_!57"><include>"run_!0"</include><var name="ImgFile"> "data/tm15_1_1" </var><var name="clusters"> 5 </var><var name="OutFile"> "results/seg15_1_1" </var><var name="FeatFile"> "results/feat15_1_1" </var><var name="KLFile"> "results/kl15_1_1" </var><var name="IwBFile"> "results/emb15_1_1" </var><var name="EdgeFile"> "results/edge15_1_1" </var></section>
+
+  <section name="run_!58"><include>"run_!0"</include><var name="ImgFile"> "data/tm15_1_2" </var><var name="clusters"> 6 </var><var name="OutFile"> "results/seg15_1_2" </var><var name="FeatFile"> "results/feat15_1_2" </var><var name="KLFile"> "results/kl15_1_2" </var><var name="IwBFile"> "results/emb15_1_2" </var><var name="EdgeFile"> "results/edge15_1_2" </var></section>
+
+  <section name="run_!59"><include>"run_!0"</include><var name="ImgFile"> "data/tm15_2_1" </var><var name="clusters"> 7 </var><var name="OutFile"> "results/seg15_2_1" </var><var name="FeatFile"> "results/feat15_2_1" </var><var name="KLFile"> "results/kl15_2_1" </var><var name="IwBFile"> "results/emb15_2_1" </var><var name="EdgeFile"> "results/edge15_2_1" </var></section>
+
+  <section name="run_!60"><include>"run_!0"</include><var name="ImgFile"> "data/tm15_2_2" </var><var name="clusters"> 8 </var><var name="OutFile"> "results/seg15_2_2" </var><var name="FeatFile"> "results/feat15_2_2" </var><var name="KLFile"> "results/kl15_2_2" </var><var name="IwBFile"> "results/emb15_2_2" </var><var name="EdgeFile"> "results/edge15_2_2" </var></section>
+
+
+
+
+
+
+
+
+
+<section name="run_!61"><include>"run_!0"</include><var name="ImgFile"> "data/tm16_1_1" </var><var name="clusters"> 5 </var><var name="OutFile"> "results/seg16_1_1" </var><var name="FeatFile"> "results/feat16_1_1" </var><var name="KLFile"> "results/kl16_1_1" </var><var name="IwBFile"> "results/emb16_1_1" </var><var name="EdgeFile"> "results/edge16_1_1" </var></section>
+
+  <section name="run_!62"><include>"run_!0"</include><var name="ImgFile"> "data/tm16_1_2" </var><var name="clusters"> 6 </var><var name="OutFile"> "results/seg16_1_2" </var><var name="FeatFile"> "results/feat16_1_2" </var><var name="KLFile"> "results/kl16_1_2" </var><var name="IwBFile"> "results/emb16_1_2" </var><var name="EdgeFile"> "results/edge16_1_2" </var></section>
+
+  <section name="run_!63"><include>"run_!0"</include><var name="ImgFile"> "data/tm16_2_1" </var><var name="clusters"> 7 </var><var name="OutFile"> "results/seg16_2_1" </var><var name="FeatFile"> "results/feat16_2_1" </var><var name="KLFile"> "results/kl16_2_1" </var><var name="IwBFile"> "results/emb16_2_1" </var><var name="EdgeFile"> "results/edge16_2_1" </var></section>
+
+  <section name="run_!64"><include>"run_!0"</include><var name="ImgFile"> "data/tm16_2_2" </var><var name="clusters"> 8 </var><var name="OutFile"> "results/seg16_2_2" </var><var name="FeatFile"> "results/feat16_2_2" </var><var name="KLFile"> "results/kl16_2_2" </var><var name="IwBFile"> "results/emb16_2_2" </var><var name="EdgeFile"> "results/edge16_2_2" </var></section>
+
+
+
+
+
+
+
+
+<section name="run_!65"><include>"run_!0"</include><var name="ImgFile"> "data/tm17_1_1" </var><var name="clusters"> 5 </var><var name="OutFile"> "results/seg17_1_1" </var><var name="FeatFile"> "results/feat17_1_1" </var><var name="KLFile"> "results/kl17_1_1" </var><var name="IwBFile"> "results/emb17_1_1" </var><var name="EdgeFile"> "results/edge17_1_1" </var></section>
+
+  <section name="run_!66"><include>"run_!0"</include><var name="ImgFile"> "data/tm17_1_2" </var><var name="clusters"> 6 </var><var name="OutFile"> "results/seg17_1_2" </var><var name="FeatFile"> "results/feat17_1_2" </var><var name="KLFile"> "results/kl17_1_2" </var><var name="IwBFile"> "results/emb17_1_2" </var><var name="EdgeFile"> "results/edge17_1_2" </var></section>
+
+  <section name="run_!67"><include>"run_!0"</include><var name="ImgFile"> "data/tm17_2_1" </var><var name="clusters"> 7 </var><var name="OutFile"> "results/seg17_2_1" </var><var name="FeatFile"> "results/feat17_2_1" </var><var name="KLFile"> "results/kl17_2_1" </var><var name="IwBFile"> "results/emb17_2_1" </var><var name="EdgeFile"> "results/edge17_2_1" </var></section>
+
+  <section name="run_!68"><include>"run_!0"</include><var name="ImgFile"> "data/tm17_2_2" </var><var name="clusters"> 8 </var><var name="OutFile"> "results/seg17_2_2" </var><var name="FeatFile"> "results/feat17_2_2" </var><var name="KLFile"> "results/kl17_2_2" </var><var name="IwBFile"> "results/emb17_2_2" </var><var name="EdgeFile"> "results/edge17_2_2" </var></section>
+
+
+
+
+
+
+
+
+
+
+
+
+<section name="run_!69"><include>"run_!0"</include><var name="ImgFile"> "data/tm18_1_1" </var><var name="clusters"> 5 </var><var name="OutFile"> "results/seg18_1_1" </var><var name="FeatFile"> "results/feat18_1_1" </var><var name="KLFile"> "results/kl18_1_1" </var><var name="IwBFile"> "results/emb18_1_1" </var><var name="EdgeFile"> "results/edge18_1_1" </var></section>
+
+  <section name="run_!70"><include>"run_!0"</include><var name="ImgFile"> "data/tm18_1_2" </var><var name="clusters"> 6 </var><var name="OutFile"> "results/seg18_1_2" </var><var name="FeatFile"> "results/feat18_1_2" </var><var name="KLFile"> "results/kl18_1_2" </var><var name="IwBFile"> "results/emb18_1_2" </var><var name="EdgeFile"> "results/edge18_1_2" </var></section>
+
+  <section name="run_!71"><include>"run_!0"</include><var name="ImgFile"> "data/tm18_2_1" </var><var name="clusters"> 7 </var><var name="OutFile"> "results/seg18_2_1" </var><var name="FeatFile"> "results/feat18_2_1" </var><var name="KLFile"> "results/kl18_2_1" </var><var name="IwBFile"> "results/emb18_2_1" </var><var name="EdgeFile"> "results/edge18_2_1" </var></section>
+
+  <section name="run_!72"><include>"run_!0"</include><var name="ImgFile"> "data/tm18_2_2" </var><var name="clusters"> 8 </var><var name="OutFile"> "results/seg18_2_2" </var><var name="FeatFile"> "results/feat18_2_2" </var><var name="KLFile"> "results/kl18_2_2" </var><var name="IwBFile"> "results/emb18_2_2" </var><var name="EdgeFile"> "results/edge18_2_2" </var></section>
+
+
+
+
+
+
+<section name="run_!73"><include>"run_!0"</include><var name="ImgFile"> "data/tm19_1_1" </var><var name="clusters"> 5 </var><var name="OutFile"> "results/seg19_1_1" </var><var name="FeatFile"> "results/feat19_1_1" </var><var name="KLFile"> "results/kl19_1_1" </var><var name="IwBFile"> "results/emb19_1_1" </var><var name="EdgeFile"> "results/edge19_1_1" </var></section>
+
+  <section name="run_!74"><include>"run_!0"</include><var name="ImgFile"> "data/tm19_1_2" </var><var name="clusters"> 6 </var><var name="OutFile"> "results/seg19_1_2" </var><var name="FeatFile"> "results/feat19_1_2" </var><var name="KLFile"> "results/kl19_1_2" </var><var name="IwBFile"> "results/emb19_1_2" </var><var name="EdgeFile"> "results/edge19_1_2" </var></section>
+
+  <section name="run_!75"><include>"run_!0"</include><var name="ImgFile"> "data/tm19_2_1" </var><var name="clusters"> 7 </var><var name="OutFile"> "results/seg19_2_1" </var><var name="FeatFile"> "results/feat19_2_1" </var><var name="KLFile"> "results/kl19_2_1" </var><var name="IwBFile"> "results/emb19_2_1" </var><var name="EdgeFile"> "results/edge19_2_1" </var></section>
+
+  <section name="run_!76"><include>"run_!0"</include><var name="ImgFile"> "data/tm19_2_2" </var><var name="clusters"> 8 </var><var name="OutFile"> "results/seg19_2_2" </var><var name="FeatFile"> "results/feat19_2_2" </var><var name="KLFile"> "results/kl19_2_2" </var><var name="IwBFile"> "results/emb19_2_2" </var><var name="EdgeFile"> "results/edge19_2_2" </var></section>
+
+
+
+
+
+<section name="run_!77"><include>"run_!0"</include><var name="ImgFile"> "data/tm20_1_1" </var><var name="clusters"> 5 </var><var name="OutFile"> "results/seg20_1_1" </var><var name="FeatFile"> "results/feat20_1_1" </var><var name="KLFile"> "results/kl20_1_1" </var><var name="IwBFile"> "results/emb20_1_1" </var><var name="EdgeFile"> "results/edge20_1_1" </var></section>
+
+  <section name="run_!78"><include>"run_!0"</include><var name="ImgFile"> "data/tm20_1_2" </var><var name="clusters"> 6 </var><var name="OutFile"> "results/seg20_1_2" </var><var name="FeatFile"> "results/feat20_1_2" </var><var name="KLFile"> "results/kl20_1_2" </var><var name="IwBFile"> "results/emb20_1_2" </var><var name="EdgeFile"> "results/edge20_1_2" </var></section>
+
+  <section name="run_!79"><include>"run_!0"</include><var name="ImgFile"> "data/tm20_2_1" </var><var name="clusters"> 7 </var><var name="OutFile"> "results/seg20_2_1" </var><var name="FeatFile"> "results/feat20_2_1" </var><var name="KLFile"> "results/kl20_2_1" </var><var name="IwBFile"> "results/emb20_2_1" </var><var name="EdgeFile"> "results/edge20_2_1" </var></section>
+
+  <section name="run_!80"><include>"run_!0"</include><var name="ImgFile"> "data/tm20_2_2" </var><var name="clusters"> 8 </var><var name="OutFile"> "results/seg20_2_2" </var><var name="FeatFile"> "results/feat20_2_2" </var><var name="KLFile"> "results/kl20_2_2" </var><var name="IwBFile"> "results/emb20_2_2" </var><var name="EdgeFile"> "results/edge20_2_2" </var></section>
+
+
+
 </main>
+
+

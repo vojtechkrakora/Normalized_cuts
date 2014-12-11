@@ -19,6 +19,7 @@ public:
 		this->y=y;
 		this->color=color;
                 this->isInCluster = false;
+                this->cluster = 0;
 	}
         void print()
         {
@@ -41,6 +42,7 @@ private:
     float eigenvalue;				//vlastni cislo 2nd
     float * eigenvector;			//vlastni vektor
     int nextClusterID;
+    int tmp_clusterCnt;
      
     int countPosition(int x,int y);
     void countCoords(int &x, int &y, int position);
@@ -53,8 +55,9 @@ private:
     void CreateDegreeMatrix(); 		// vytvori degree matici
     void ComputeEigenVector(int eigvalOffset = 0);		// vypocita vlastni vektor
     void Cut();				// provede rez
+    void recursive_Cut(int cl);				// provede rez
     float getClusterRatio(float max, float min); //zjisti pomer, dle ktereho pozna, jestli jde uz o cely cluster nebo se bude dal delit
-	
+    float get_median(const float * input, const int size);
 public:
     NCut(float *** input,int lenght1, int lenght2, int clusterCnt); // vyplni inputMatrix ("splacne")
     ~NCut();

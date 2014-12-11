@@ -346,6 +346,7 @@ int Segmenter::thematic_map(DyXML_wrapper &par) {
     probs=temp;
   }
 
+  
 // allocate array for final segmentation
   vr_alloc(final,0,nr-1,0,nc-1);
 

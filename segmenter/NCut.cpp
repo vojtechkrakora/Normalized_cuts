@@ -17,7 +17,7 @@ bool AreSameFloats(float a, float b) {
 }
 
 /* Vypocte median, s input pracuje jako input[1..size]*/
-float get_median(const float * input, const int size)
+float NCut::get_median(const float * input, const int size)
 {
     float * sorted = new float[size+1];
     sorted[0] = 0.0;
@@ -198,17 +198,27 @@ void NCut::ComputeEigenVector(int eigvalOffset){
 
 //provede rez
 void NCut::Cut(){      
-    float threshold = 0.00;   
+    float threshold = 0.00;
     float cluster1_max = INT_MIN, cluster2_max = INT_MIN, 
             cluster1_min = INT_MAX, cluster2_min = INT_MAX;
     float ratio1, ratio2;
+    float * median_Arr = new float[nodesCnt];
+    int median_Arr_size = 1;
     
+    for(int i = 1; i < nodesCnt; i++)
+    {
+        if(nodes[i]->isInCluster == false)
+        {
+            median_Arr[median_Arr_size++] = eigenvector[i];
+        }
+    }
 //    for(int i = 1; i < nodesCnt+1; i++)
 //    {
 //        threshold += eigenvector[i];
 //    }
 //    threshold /= nodesCnt;
-    threshold = get_median(eigenvector,nodesCnt);
+    //threshold = eigenvector[191];
+    threshold = get_median(median_Arr,median_Arr_size-1);
     
     printf("Threshold is %f .\n",threshold);
     for(int i = 1; i < nodesCnt+1; i++)
@@ -233,12 +243,14 @@ void NCut::Cut(){
                 cluster2_min = eigenvector[i];
         }
     }
-     
+    
+    
     // vypocita pomery obou clusteru
     ratio1 = getClusterRatio(cluster1_max, cluster1_min);
     ratio2 = getClusterRatio(cluster2_max, cluster2_min);
     
     //cluster, ktery ma vetsi ratio je napevno ustalen
+    printf("? ratio1(%f) > ratio2(%f).\n",ratio1,ratio2);
     if(ratio1 > ratio2)
     {
         for(int i = 1; i < nodesCnt+1; i++)
@@ -252,22 +264,24 @@ void NCut::Cut(){
         {
             if(nodes[i]->cluster == nextClusterID+1)
             {   
-                /* Aby cisla clusteru sla po sobe, je treba v tomto pripade, 
+                /* 
+                 * Aby cisla clusteru sla po sobe, je treba v tomto pripade, 
                  * ze obstoji druhy cluster jeho cislo zmensit na ukor
                  * prohravajiciho.
                  */
                 nodes[i]->cluster = nextClusterID;
                 nodes[i]->isInCluster = true;
-            }else
+            } else
             {
-                /* Ostatni nody, ktery nejsou v clusteru predpokladaji, ze 
-                 * budou cluster nasledujici.
-                 */
                 if(nodes[i]->isInCluster == false)
                     nodes[i]->cluster = nextClusterID+1;
             }
         }
     }
+    
+    // nastaveni cisla dalsiho clusteru
+    this->nextClusterID++;
+
     
     for(int i = 1; i < nodesCnt+1; i++)
     {
@@ -277,11 +291,81 @@ void NCut::Cut(){
         }
         printf("%d ",nodes[i]->cluster);
     }
-    // nastaveni cisla dalsiho clusteru
-    this->nextClusterID++;
            
 }
-                
+void NCut::recursive_Cut(int cl){
+    float threshold = 0.00;
+    float * median_Arr = new float[nodesCnt];
+    int median_Arr_size = 1;
+    float cluster1_max = INT_MIN, cluster2_max = INT_MIN, 
+            cluster1_min = INT_MAX, cluster2_min = INT_MAX;
+    float ratio1, ratio2;
+    float actual_clust_id;
+    
+    if(this->tmp_clusterCnt == clusterCnt)
+        return;
+    
+    for(int i = 1; i < nodesCnt; i++)
+    {
+        if(nodes[i]->cluster == cl)
+        {
+            median_Arr[median_Arr_size++] = eigenvector[i];
+        }
+    }
+
+    threshold = get_median(median_Arr,median_Arr_size-1);
+    
+    printf("Threshold is %f .\n",threshold);
+    tmp_clusterCnt += 1;
+    
+    for(int i = 1; i < nodesCnt+1; i++)
+    {      
+        
+        if(eigenvector[i] < threshold) /*TODO*/
+        {
+            if(nodes[i]->cluster == cl){
+            nodes[i]->cluster = this->nextClusterID;
+            if(eigenvector[i] > cluster1_max)
+                cluster1_max = eigenvector[i];
+            if(eigenvector[i] < cluster1_min)
+                cluster1_min = eigenvector[i];
+            }
+        } else
+        {
+            if(nodes[i]->cluster == cl){
+            nodes[i]->cluster = this->nextClusterID+1;
+            if(eigenvector[i] > cluster2_max)
+                cluster2_max = eigenvector[i];
+            if(eigenvector[i] < cluster2_min)
+                cluster2_min = eigenvector[i];
+            }
+        }
+    }
+    
+     for(int i = 1; i < nodesCnt+1; i++)
+    {
+        if((i-1)%lenght1 == 0)
+        {
+            printf("\n");
+        }
+        printf("%d ",nodes[i]->cluster);
+    }
+    // vypocita pomery obou clusteru
+    ratio1 = getClusterRatio(cluster1_max, cluster1_min);
+    ratio2 = getClusterRatio(cluster2_max, cluster2_min);
+    
+    //cluster, ktery ma vetsi ratio je napevno ustalen
+    printf("? ratio1(%f) > ratio2(%f).\n",ratio1,ratio2);
+    
+    actual_clust_id = this->nextClusterID;
+    this->nextClusterID += 2;
+    
+    if(ratio1 < 0.01)
+        recursive_Cut(actual_clust_id);
+    
+    if(ratio2 < 0.01)
+        recursive_Cut(actual_clust_id+1);
+}            
 float k_nn(float***img,int shrinkRatio,int color ,int j, int k){                
     float value=0;
     int maxCount=0;
@@ -349,6 +433,7 @@ NCut::NCut(float *** img,int lenght1, int lenght2, int clustersCnt){
         }
         printf("\n");
     }
+    this->tmp_clusterCnt = 1;
     this->lenght1=lenght1;
     this->lenght2=lenght2;
     this->eigenvector = new float[nodesCnt+1];
@@ -393,6 +478,8 @@ void NCut::Segmentation(){
         ComputeEigenVector(i);
         Cut();
     }
+    //ComputeEigenVector();
+    //recursive_Cut(0);
 }
 
 //TODO otestovat
@@ -424,7 +511,7 @@ float NCut::getClusterRatio(float max, float min)
     {
         printf("Error. Probably are swaped input variables max(=%f) and"
                 " min(=%f).\n",max,min);
-        return 1;
+        return (1);
     }
     
     // pripad opacnych znamenek by nemel byt v jednom clusteru
@@ -432,7 +519,7 @@ float NCut::getClusterRatio(float max, float min)
         return 0.0; 
     
     //min a max jsou zaporna, vypocteme abs hodnotu a vymenime min a max
-    if(max < 0)
+    if(max < 0.0)
     {
         tmp = fabs(max);
         max = fabs(min);
@@ -443,7 +530,7 @@ float NCut::getClusterRatio(float max, float min)
     {
         printf("Error. Max is %f (Min is %f). Can't divide with zero.\n",max,
                 min);
-        exit(0);
+        return (1);
     }
     
     return (min/max);
