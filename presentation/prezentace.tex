@@ -25,7 +25,8 @@
 \section{Princip}
 \begin{frame}
 \begin{itemize}
-\item $G=(V,E), V \rightarrow$ pixely, $E \rightarrow$ míra podobnosti mezi uzly
+\item $G=(V,E), V \rightarrow$ pixely, $E \rightarrow$ míra podobnosti mezi uzly.
+\item Míra podobnosti $w(x,y)=e^{-\frac{||color(x) - color(y)||}{\sigma}} * e^{-\frac{||distance(x,y)||}{\sigma}}$
 \item Hledání normalizovaného minimálního řezu grafu.
 
 \begin{center}
@@ -46,6 +47,8 @@ $ assoc(A,V)=\sum_{u\in A, t\in V} w(u,t)$
 \item Zjednodušení na $D^{-\frac{1}{2}}(D-A)D^{-\frac{1}{2}}v=\lambda v$
 \item $D=|G(V)|$ x $|G(V)|$ matice stupně (degree matrix)
 \item $A=|G(V)|$ x $|G(V)|$ matice podobnosti (affinity matrix)
+\item $D_{i,i}=\sum_{j\in V}d(i,j)$,$D_{i,j;i\neq j}=0$
+\item $A_{i,j}=d(i,j)$
 \end{itemize}
 \end{frame}
 \section{Algoritmus}
@@ -55,7 +58,7 @@ $ assoc(A,V)=\sum_{u\in A, t\in V} w(u,t)$
 \item Vytvoření matice A a D.
 \item Výpočet vlastního vektoru druhého nejmenšího vlastního čísla.
 \item Rozdělení grafu G na dvě disjunktní množiny A, B pomocí vlastního vektoru.
-\item Opakovaní algoritmu na podmnožiny v případě nestabilního řezu.
+\item Rekurzivně opakovat na množinách A, B v případě nestabilního řezu.
 \end{enumerate}
 
 \end{frame}
@@ -66,7 +69,10 @@ $ assoc(A,V)=\sum_{u\in A, t\in V} w(u,t)$
 
 \section*{Zdroje}
 \begin{frame}
-
+\begin{thebibliography}{9}
+\bibitem{shi}
+SHI, Jianbo a J. MALIK. Normalized cuts and image segmentation. \textit{IEEE Transactions on Pattern Analysis and Machine Intelligence} [online]. 2000, vol.~22, issue 8, s.~888-905 [cit. 2014-12-13]. DOI: 10.1109/34.868688. 
+\end{thebibliography}
 \end{frame}
 
 
